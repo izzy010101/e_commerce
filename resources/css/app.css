@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.primary_btn {
+    background-color: #C5B358;
+}
+
+.primary_btn:hover {
+    background-color: #c7b84d;
+}
+
+.primary_btn:focus {
+    background-color: #c7b84d;
+}
+
+.primary_btn:active {
+    background-color: #c7b84d;
+}
+
+
