@@ -15,7 +15,7 @@
                     <img src="{{ asset('assets/icons/wishlist_icon.png') }}" alt="wishlist_icon" class="h-fit w-full">
                 </div>
             </a>
-            <a href="#">
+            <a href="/login">
                 <div  class="h-[30px] w-[30px]">
                     <img src="{{ asset('assets/icons/profile_icon.png') }}" alt="profile_icon">
                 </div>

@@ -42,6 +42,7 @@ import axios from 'axios';
 
 const query = ref('');
 const results = ref([]);
+const noResults = false;
 
 const search = async () => {
     if (query.value.trim() === '') {
@@ -54,13 +55,13 @@ const search = async () => {
             params: { q: query.value }
         });
         results.value = response.data;
+        this.noResults = response.data.length === 0;
     } catch (error) {
         console.error('Search error:', error);
     }
 };
 
 const limitedResults = computed(() => results.value.slice(0, 5));
-console.log(limitedResults);
 
 const redirectToProduct = (id) => {
     // Redirect using Laravel routes

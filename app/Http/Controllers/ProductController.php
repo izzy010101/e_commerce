@@ -106,8 +106,13 @@ class ProductController extends Controller
         // Fetch products based on the query
         $products = Product::where('name', 'like', "%{$query}%")->get();
 
+        if ($products->isEmpty()) {
+            return response()->json(['message' => 'No products found'], 404);
+        }
+
         return response()->json($products);
     }
+
 
 
 }
