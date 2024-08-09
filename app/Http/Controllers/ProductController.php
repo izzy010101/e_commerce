@@ -94,4 +94,20 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
     }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('q');
+
+        // Sanitize and validate input
+        $query = trim($query); // Remove extra spaces
+        $query = htmlspecialchars($query, ENT_QUOTES, 'UTF-8'); // Escape special characters
+
+        // Fetch products based on the query
+        $products = Product::where('name', 'like', "%{$query}%")->get();
+
+        return response()->json($products);
+    }
+
+
 }

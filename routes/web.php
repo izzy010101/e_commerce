@@ -14,14 +14,16 @@ use App\Models\Category;
 
 // Home page route
 Route::get('/', [GuestController::class, 'home']);
-//
-//Route::get('/categories', function () {
-//    $categories = Category::with('images')->get();
-//    return view('categories.index', compact('categories'));
-//});
+
+//search bar at navigation all website
+Route::get('/search-products', [ProductController::class, 'search'])->name('products.search');
+Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+
 
 //show categories to guests
 Route::get('/category/{id}', [GuestController::class, 'showCategory'])->name('guest.category.show');
+
+
 
 
 

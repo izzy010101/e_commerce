@@ -1,7 +1,6 @@
-import './bootstrap';
+import { createApp } from 'vue';
+import SearchBarComponent from './components/SearchBarComponent.vue';
 
-import Alpine from 'alpinejs';
-
-window.Alpine = Alpine;
-
-Alpine.start();
+const app = createApp({});
+app.component('search-bar-component', SearchBarComponent);
+app.mount('#app');
