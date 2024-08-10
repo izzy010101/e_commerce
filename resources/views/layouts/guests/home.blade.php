@@ -14,5 +14,73 @@
 
     </div>
 
+{{--    videos part of the page--}}
+    <h1 class="font-thin text-6xl p-8 text-center">Ziara Services</h1>
+
+    <div class="flex justify-center text-center gap-10 pb-8">
+
+        <div class="max-w-sm">
+            <a href="#">
+                <video muted autoplay loop class="w-full rounded-t-lg  shadow-lg"
+{{--                       poster="{{ asset('images/video1-poster.jpg') }}"--}}
+                       preload="metadata">
+                    <source src="{{ asset('videos/video1.mp4') }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </a>
+            <div class="p-5">
+                <a href="#">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white uppercase">Personalization</h5>
+                </a>
+                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">We create personalized luxury clothing tailored to individual styles, ensuring a unique and exclusive experience.</p>      <a href="#" class="inline-flex items-center px-3 py-2 font-bold text-lg text-center text-black underline ">
+                    Find Out How
+                </a>
+            </div>
+        </div>
+
+
+        <div class="max-w-sm">
+            <a href="#">
+                <video muted autoplay loop class="w-full rounded-t-lg  shadow-lg"
+{{--                       poster="{{ asset('images/video2-poster.jpg') }}"--}}
+                       preload="metadata">
+                    <source src="{{ asset('videos/video2.mp4') }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </a>
+            <div class="p-5">
+                <a href="#">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white uppercase">Order your measurements</h5>
+                </a>
+                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Order with your exact measurements for a perfect fit, ensuring luxury and personalized comfort.</p>
+                <a href="#" class="inline-flex items-center px-3 py-2 font-bold text-lg text-center text-black underline ">
+                    Find Out How
+                </a>
+            </div>
+        </div>
+
+
+        <div class="max-w-sm">
+            <a href="#">
+                <video muted autoplay loop class="w-full rounded-t-lg h-[215.1px] shadow-lg"
+{{--                       poster="{{ asset('images/video3-poster.jpg') }}"--}}
+                       preload="metadata">
+                    <source src="{{ asset('videos/video3.mp4') }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </a>
+            <div class="p-5">
+                <a href="#">
+                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white uppercase">Modern Design</h5>
+                </a>
+                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Order custom modern designs tailored to your style, offering exclusivity and personalized elegance.</p>
+                <a href="#" class="inline-flex items-center px-3 py-2 font-bold text-lg text-center text-black underline ">
+                    Find Out How
+                </a>
+            </div>
+        </div>
+
+    </div>
+
 </x-guest-layout>
 
