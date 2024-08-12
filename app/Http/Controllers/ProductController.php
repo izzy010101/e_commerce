@@ -36,13 +36,19 @@ class ProductController extends Controller
             'description' => 'required|string',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
-            //ili url ovde nisam sigurna
-            'image_url' => 'required|string',
             'colors' => 'required|json',
             'category_id' => 'required|exists:categories,id',
         ]);
 
         $product = Product::create($validated);
+
+        // After product creation, associate images
+        for ($i = 0; $i < 4; $i++) {
+            $product->images()->create([
+                'url' => \Faker\Factory::create()->imageUrl(640, 480, 'babies', true),
+            ]);
+        }
+
         return redirect()->route('product.index')->with('success', 'Product created successfully.');
     }
 
@@ -71,17 +77,26 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-           'name' => 'required|max:255',
-           'description' => 'required|string',
-           'price' => 'required|numeric',
+            'name' => 'required|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
             'stock' => 'required|integer',
-            'image_url' => 'required|string',
             'colors' => 'required|json',
             'category_id' => 'required|exists:categories,id',
         ]);
 
         $product = Product::findOrFail($id);
         $product->update($validated);
+
+        // Optionally replace images
+        $product->images()->delete();
+
+        for ($i = 0; $i < 4; $i++) {
+            $product->images()->create([
+                'url' => \Faker\Factory::create()->imageUrl(640, 480, 'babies', true),
+            ]);
+        }
+
         return redirect()->route('products.index')->with('success', 'Product updated successfully.');
     }
 

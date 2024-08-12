@@ -1,23 +1,122 @@
 <x-guest-layout>
+    @push('head')
+        <!-- Preload key images -->
+        @foreach ($products as $product)
+            @foreach($product->images->take(2) as $image) <!-- Preload first 2 images per product -->
+            <link rel="preload" href="{{ $image->path }}" as="image">
+            @endforeach
+        @endforeach
+    @endpush
+
     <div class="container mx-auto p-4">
         <h1 class="text-2xl font-bold mb-4">{{ $category->name }}</h1>
 
-        <h2 class="text-xl font-bold mt-4">Products</h2>
-        <ul class="flex flex-col">
+        <h2 class="text-xl font-bold mt-4">Products:</h2>
+
+        <!-- Grid Layout for Product Cards -->
+        <div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             @foreach ($products as $product)
-                <li>
-                    <div class="flex gap-6">
-                        <h3 class="text-lg font-semibold">{{ $product->name }}</h3>
-                        <div>{{ $product->description }}</div>
-                        <div>${{ $product->price }}</div>
-                        <div>In Stock: {{ $product->stock }}</div>
-                        <div>Colors: {{ implode(', ', json_decode($product->colors)) }}</div>
-                        @foreach ($product->images as $image)
-                            <img src="{{ asset($image->path) }}" alt="{{ $product->name }}" class="w-[100px] h-[100px]">
-                        @endforeach
-                    </div>
-                </li>
+                <div class="border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 bg-white dark:bg-gray-800 relative">
+                    <figure class="flex flex-col items-center justify-center p-8 text-center bg-white dark:bg-gray-800 dark:border-gray-700 relative">
+
+                        <!-- Wishlist Heart Icon -->
+                        <button class="absolute top-2 right-2 bg-transparent border-none cursor-pointer">
+                            <img src="{{asset('assets/icons/wishlist_icon.png')}}" alt="wishist_icon_category_guests" class="w-[30px] pt-2 pl-2 hover:w-[35px]">
+                        </button>
+
+                        <!-- Product Image Gallery -->
+                        <div class="relative w-[150px] h-[150px]">
+                            @foreach($product->images as $index => $image)
+                                <img src="{{ asset('assets/images/placeholder.png') }}"
+                                     data-path="{{ $image->path }}"
+                                     alt="{{ $product->name }}"
+                                     class="product-image w-[150px] h-[150px] object-cover rounded-lg absolute inset-0 {{ $index === 0 ? 'active' : 'hidden' }}"
+                                     loading="lazy"
+                                     onerror="this.onerror=null;this.src='{{ asset('assets/images/placeholder.png') }}';">
+                            @endforeach
+                            <!-- Left and Right Navigation Buttons -->
+                            <button class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-1 rounded-full focus:outline-none" onclick="prevImage(this)">&#10094;</button>
+                            <button class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-1 rounded-full focus:outline-none" onclick="nextImage(this)">&#10095;</button>
+                        </div>
+
+                        <!-- Product Details -->
+                        <blockquote class="max-w-2xl  mb-4 text-gray-500 lg:mb-8 dark:text-gray-400">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ $product->name }}</h3>
+                            <p class="my-4">{{ $product->description }}</p>
+                            <p class="text-lg text-gray-900 dark:text-white">${{ $product->price }}</p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">In Stock: {{ $product->stock }}</p>
+
+                            <!-- Display Color Circles -->
+                            <div class="flex justify-center w-full space-x-2 mt-2">
+                                @foreach (json_decode($product->colors) as $color)
+                                    <div class="w-6 h-6 rounded-full border-gray-500 border-[0.5px]" style="background-color: {{ $color }};"></div>
+                                @endforeach
+                            </div>
+                        </blockquote>
+                    </figure>
+                </div>
             @endforeach
-        </ul>
+        </div>
     </div>
+
+    <script>
+        // Function to navigate to the previous image
+        function prevImage(button) {
+            const gallery = button.parentElement;
+            const images = gallery.querySelectorAll('.product-image');
+            let activeIndex = Array.from(images).findIndex(image => image.classList.contains('active'));
+
+            images[activeIndex].classList.remove('active');
+            images[activeIndex].classList.add('hidden');
+
+            activeIndex = (activeIndex === 0) ? images.length - 1 : activeIndex - 1;
+
+            images[activeIndex].classList.remove('hidden');
+            images[activeIndex].classList.add('active');
+        }
+
+        // Function to navigate to the next image
+        function nextImage(button) {
+            const gallery = button.parentElement;
+            const images = gallery.querySelectorAll('.product-image');
+            let activeIndex = Array.from(images).findIndex(image => image.classList.contains('active'));
+
+            images[activeIndex].classList.remove('active');
+            images[activeIndex].classList.add('hidden');
+
+            activeIndex = (activeIndex === images.length - 1) ? 0 : activeIndex + 1;
+
+            images[activeIndex].classList.remove('hidden');
+            images[activeIndex].classList.add('active');
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const images = document.querySelectorAll('.product-image');
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const image = entry.target;
+                        const imagePath = image.getAttribute('data-path');
+                        const imageKey = `image_${btoa(imagePath)}`;
+
+                        const storedImagePath = localStorage.getItem(imageKey);
+
+                        if (storedImagePath) {
+                            image.src = storedImagePath;
+                        } else {
+                            image.src = imagePath;
+                            localStorage.setItem(imageKey, imagePath);
+                        }
+
+                        observer.unobserve(image);
+                    }
+                });
+            });
+
+            images.forEach(image => {
+                observer.observe(image);
+            });
+        });
+    </script>
 </x-guest-layout>

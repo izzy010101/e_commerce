@@ -14,14 +14,33 @@
 
     </div>
 
+
+
+{{--    middle part of the page--}}
+
+    <div class="flex">
+
+        <div class="w-1/2 h-screen px-6 py-20 text-center text-surface flex flex-col justify-center items-center dark:bg-neutral-700 dark:text-white">
+            <h1 class="mb-6 text-4xl font-thin">Introducing The Men 2024 Campaign</h1>
+            <p class="mb-8 text-md w-1/2">Spotlighting individuality in Ziara Colluci’s new men’s campaign for the House.</p>
+            <a class="inline-block py-3 px-2 text-lg font-medium uppercase leading-normal text-black font-semibold underline" href="#" role="button">Discover More</a>
+        </div>
+
+        <div class="w-1/2 bg-cover bg-no-repeat bg-center h-screen "
+             style="background-image: url('{{ asset('assets/images/beige_man.jpg') }}');"
+        ></div>
+
+    </div>
+
+
 {{--    videos part of the page--}}
-    <h1 class="font-thin text-6xl p-8 text-center">Ziara Services</h1>
+    <h1 class="font-thin text-6xl p-8 text-center mt-6 mb-6">Ziara Services</h1>
 
     <div class="flex justify-center text-center gap-10 pb-8">
 
         <div class="max-w-sm">
             <a href="#">
-                <video muted autoplay loop class="w-full rounded-t-lg  shadow-lg"
+                <video muted autoplay loop class="w-full shadow-lg"
 {{--                       poster="{{ asset('images/video1-poster.jpg') }}"--}}
                        preload="metadata">
                     <source src="{{ asset('videos/video1.mp4') }}" type="video/mp4">
@@ -41,7 +60,7 @@
 
         <div class="max-w-sm">
             <a href="#">
-                <video muted autoplay loop class="w-full rounded-t-lg  shadow-lg"
+                <video muted autoplay loop class="w-full shadow-lg"
 {{--                       poster="{{ asset('images/video2-poster.jpg') }}"--}}
                        preload="metadata">
                     <source src="{{ asset('videos/video2.mp4') }}" type="video/mp4">
@@ -62,7 +81,7 @@
 
         <div class="max-w-sm">
             <a href="#">
-                <video muted autoplay loop class="w-full rounded-t-lg h-[215.1px] shadow-lg"
+                <video muted autoplay loop class="w-full h-[215.1px] shadow-lg"
 {{--                       poster="{{ asset('images/video3-poster.jpg') }}"--}}
                        preload="metadata">
                     <source src="{{ asset('videos/video3.mp4') }}" type="video/mp4">
