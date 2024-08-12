@@ -72,6 +72,7 @@
             <x-auth-session-status class="mb-4" :status="session('status')" />
         </form>
 
+        <!-- What will you get in ziara account part of the page -->
         <div class="card w-1/2 h-[500px] flex content-center justify-center">
             <div class="w-1/2 rounded bg-[#e0e2e6] h-[360px]">
                 <p class="uppercase text-xs font-thin p-6">What will you find in your Ziara Account</p>
@@ -96,8 +97,6 @@
                     <img src="{{asset('assets/icons/offers_icon.png')}}" alt="cart_icon" class="w-[30px]">
                     <span class="h-fit">Get special offers and discounts</span>
                 </p>
-
-
             </div>
         </div>
     </div>

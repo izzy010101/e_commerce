@@ -7,27 +7,70 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <!-- Cart and Wishlist -->
+                <div class="flex flex-col items-center justify-center text-center bg-white dark:bg-gray-800 dark:border-gray-700 relative">
+                    <!-- Wishlist Heart Icon -->
+                    <button class="absolute top-2 right-2 bg-transparent border-none cursor-pointer">
+                        <img src="{{ asset('assets/icons/wishlist_icon.png') }}" alt="wishlist_icon_category_guests" class="w-[30px] pt-2 pl-2 hover:w-[35px]">
+                    </button>
+
+                    <!-- Add to cart only if auth -->
+                    @if(Auth::check())
+                        <button class="absolute top-2 right-10 bg-transparent border-none cursor-pointer">
+                            <img src="{{ asset('assets/icons/cart_icon.png') }}" alt="cart_icon_auth" class="w-[30px] pt-2 pl-2 hover:w-[35px]">
+                        </button>
+                    @endif
+                </div>
+
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ $product->name }}</h3>
-                    <p class="mt-4">Product ID: {{ $product->id }}</p>
                     <p class="mt-2">Description: {{ $product->description }}</p>
-                    <p class="mt-2">Price: ${{ $product->price }}</p>
+
+                    <!-- Conditionally display price or login link -->
+                    @if(Auth::check())
+                        <p class="text-md pt-4 text-gray-900 dark:text-white">Price: ${{ $product->price }}</p>
+                    @else
+                        <p class="text-md pt-4  text-red-400 underline pb-2 dark:text-white"><a href="{{ route('login') }}">Login to see the price</a></p>
+                    @endif
+
                     <p class="mt-2">Stock: {{ $product->stock }}</p>
                     <p class="mt-2">Category: {{ $product->category->name }}</p>
-                    <p class="mt-2">Colors: {{ implode(', ', json_decode($product->colors, true)) }}</p>
-                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="mt-4">
+
+                    <!-- Display Color Circles -->
+                    <div class="flex w-full space-x-2 mt-2 mb-2">
+                        <span>Colors:</span>
+                        @foreach (json_decode($product->colors) as $color)
+                            <a href="#">
+                                <div class="w-6 h-6 rounded-full border-gray-500 border-[0.5px]" style="background-color: {{ $color }};"></div>
+                            </a>
+                        @endforeach
+                    </div>
+
+                    <!-- Product Image Gallery -->
+                    <div class="relative w-[300px] h-[300px] mt-6">
+                        @foreach($product->images as $index => $image)
+                            <img src="{{ asset('assets/images/placeholder.png') }}"
+                                 data-path="{{ $image->path }}"
+                                 alt="{{ $product->name }}"
+                                 class="product-image w-full h-full object-cover rounded-lg absolute inset-0 {{ $index === 0 ? 'active' : 'hidden' }}"
+                                 loading="lazy"
+                                 onerror="this.onerror=null;this.src='{{ asset('assets/images/placeholder.png') }}';">
+                        @endforeach
+                        <!-- Left and Right Navigation Buttons -->
+                        <button class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-300 text-black p-2 rounded focus:outline-none" onclick="prevImage(this)">&#10094;</button>
+                        <button class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-300 text-black p-2 rounded focus:outline-none" onclick="nextImage(this)">&#10095;</button>
+                    </div>
 
                     @if(Auth::check())
-                        <p>User Role: {{ Auth::user()->role }}</p> <!-- Debugging line -->
                         @if(Auth::user()->role === 'admin')
-                            dd(user()->role);
                             <div class="mt-4">
-                                <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning">Edit</a>
+                                <a href="{{ route('products.edit', $product->id) }}" class="bg-amber-500 p-2 rounded text-white hover:bg-amber-300 mr-2">Edit</a>
                                 <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                    <button type="submit" class="bg-red-500 p-1.5 rounded hover:bg-red-700 text-white">Delete</button>
                                 </form>
                             </div>
                         @endif
@@ -36,4 +79,65 @@
             </div>
         </div>
     </div>
+
+    <script>
+        // Function to navigate to the previous image
+        function prevImage(button) {
+            const gallery = button.parentElement;
+            const images = gallery.querySelectorAll('.product-image');
+            let activeIndex = Array.from(images).findIndex(image => image.classList.contains('active'));
+
+            images[activeIndex].classList.remove('active');
+            images[activeIndex].classList.add('hidden');
+
+            activeIndex = (activeIndex === 0) ? images.length - 1 : activeIndex - 1;
+
+            images[activeIndex].classList.remove('hidden');
+            images[activeIndex].classList.add('active');
+        }
+
+        // Function to navigate to the next image
+        function nextImage(button) {
+            const gallery = button.parentElement;
+            const images = gallery.querySelectorAll('.product-image');
+            let activeIndex = Array.from(images).findIndex(image => image.classList.contains('active'));
+
+            images[activeIndex].classList.remove('active');
+            images[activeIndex].classList.add('hidden');
+
+            activeIndex = (activeIndex === images.length - 1) ? 0 : activeIndex + 1;
+
+            images[activeIndex].classList.remove('hidden');
+            images[activeIndex].classList.add('active');
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const images = document.querySelectorAll('.product-image');
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const image = entry.target;
+                        const imagePath = image.getAttribute('data-path');
+                        const imageKey = `image_${btoa(imagePath)}`;
+
+                        const storedImagePath = localStorage.getItem(imageKey);
+
+                        if (storedImagePath) {
+                            image.src = storedImagePath;
+                        } else {
+                            image.src = imagePath;
+                            localStorage.setItem(imageKey, imagePath);
+                        }
+
+                        observer.unobserve(image);
+                    }
+                });
+            });
+
+            images.forEach(image => {
+                observer.observe(image);
+            });
+        });
+    </script>
 </x-app-layout>

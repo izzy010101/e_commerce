@@ -1,13 +1,14 @@
 <x-guest-layout>
-        <div class="w-1/2 p-6">
-
-            <div class="flex flex-col gap-4 pb-6 pt-6">
-                <h3 class="text-2xl font-thin">Create Your Account</h3>
-                <p class="text-xs">Create your account to have access to a more personalized experience.</p>
-            </div>
 
 
-            <form method="POST" action="{{ route('register') }}">
+    <div class="flex flex-col gap-4 p-6">
+        <h3 class="text-2xl font-thin">Create Your Account</h3>
+        <p class="text-xs">Create your account to have access to a more personalized experience.</p>
+    </div>
+
+
+        <div class="flex p-6">
+            <form method="POST" action="{{ route('register') }}" class="w-1/2 h-[500px]">
                 @csrf
 
                 <!-- Name -->
@@ -62,11 +63,36 @@
                     </button>
                 </div>
             </form>
+
+            <!-- What will you get in ziara account part of the page -->
+            <div class="card w-1/2 h-[500px] flex content-center justify-center">
+                <div class="w-1/2 rounded bg-[#e0e2e6] h-[360px]">
+                    <p class="uppercase text-xs font-thin p-6">What will you find in your Ziara Account</p>
+
+
+                    <p class="flex items-center space-x-2 text-xs m-4 pl-4 pb-4 border-b border-b-[#C5B358]">
+                        <img src="{{asset('assets/icons/cart_icon.png')}}" alt="cart_icon" class="w-[30px]">
+                        <span class="h-fit">Select items and see in your cart</span>
+                    </p>
+
+                    <p class="flex items-center space-x-2 text-xs m-4 pl-4 pb-4 border-b border-b-[#C5B358]">
+                        <img src="{{asset('assets/icons/credit_card_icon.png')}}" alt="cart_icon" class="w-[30px]">
+                        <span class="h-fit">Manage your personal information</span>
+                    </p>
+
+                    <p class="flex items-center space-x-2 text-xs m-4 pl-4 pb-4 border-b border-b-[#C5B358]">
+                        <img src="{{asset('assets/icons/newsletter_icon.png')}}" alt="cart_icon" class="w-[30px]">
+                        <span class="h-fit">Receive Newsletters from Ziara Clothing</span>
+                    </p>
+
+                    <p class="flex items-center space-x-2 text-xs m-4 pl-4 pb-4 border-b border-b-[#C5B358]">
+                        <img src="{{asset('assets/icons/offers_icon.png')}}" alt="cart_icon" class="w-[30px]">
+                        <span class="h-fit">Get special offers and discounts</span>
+                    </p>
+                </div>
+            </div>
         </div>
 
-    <div class="flex">
-        <div class="w-1/2">
 
-        </div>
-    </div>
+
 </x-guest-layout>

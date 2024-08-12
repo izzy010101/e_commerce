@@ -2,8 +2,8 @@
     @push('head')
         <!-- Preload key images -->
         @foreach ($products as $product)
-            @foreach($product->images->take(2) as $image) <!-- Preload first 2 images per product -->
-            <link rel="preload" href="{{ $image->path }}" as="image">
+            @foreach($product->images->take(2) as $image)
+                <link rel="preload" href="{{ $image->path }}" as="image">
             @endforeach
         @endforeach
     @endpush
@@ -24,6 +24,13 @@
                             <img src="{{asset('assets/icons/wishlist_icon.png')}}" alt="wishist_icon_category_guests" class="w-[30px] pt-2 pl-2 hover:w-[35px]">
                         </button>
 
+                        <!-- Add to cart only if auth -->
+                        @if(Auth::check())
+                            <button class="absolute top-2 right-10 bg-transparent border-none cursor-pointer">
+                                <img src="{{asset('assets/icons/cart_icon.png')}}" alt="cart_icon_auth" class="w-[30px] pt-2 pl-2 hover:w-[35px]">
+                            </button>
+                        @endif
+
                         <!-- Product Image Gallery -->
                         <div class="relative w-[150px] h-[150px]">
                             @foreach($product->images as $index => $image)
@@ -35,21 +42,30 @@
                                      onerror="this.onerror=null;this.src='{{ asset('assets/images/placeholder.png') }}';">
                             @endforeach
                             <!-- Left and Right Navigation Buttons -->
-                            <button class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-1 rounded-full focus:outline-none" onclick="prevImage(this)">&#10094;</button>
-                            <button class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-1 rounded-full focus:outline-none" onclick="nextImage(this)">&#10095;</button>
+                            <button class="absolute left-[-20px] top-1/2 transform -translate-y-1/2 text-black p-1 rounded focus:outline-none" onclick="prevImage(this)">&#10094;</button>
+                            <button class="absolute right-[-20px] top-1/2 transform -translate-y-1/2 text-black p-1 rounded focus:outline-none" onclick="nextImage(this)">&#10095;</button>
                         </div>
 
                         <!-- Product Details -->
-                        <blockquote class="max-w-2xl  mb-4 text-gray-500 lg:mb-8 dark:text-gray-400">
+                        <blockquote class="max-w-2xl mb-4 text-gray-500 lg:mb-8 dark:text-gray-400">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ $product->name }}</h3>
                             <p class="my-4">{{ $product->description }}</p>
-                            <p class="text-lg text-gray-900 dark:text-white">${{ $product->price }}</p>
+
+                            <!-- Conditionally Display Price or Login Link -->
+                            @if(Auth::check())
+                                <p class="text-md text-gray-900 dark:text-white">${{ $product->price }}</p>
+                            @else
+                                <p class="text-md text-red-400 underline pb-2 dark:text-white"><a href="{{ route('login') }}">Login to see the price</a></p>
+                            @endif
+
                             <p class="text-sm text-gray-500 dark:text-gray-400">In Stock: {{ $product->stock }}</p>
 
                             <!-- Display Color Circles -->
                             <div class="flex justify-center w-full space-x-2 mt-2">
                                 @foreach (json_decode($product->colors) as $color)
-                                    <div class="w-6 h-6 rounded-full border-gray-500 border-[0.5px]" style="background-color: {{ $color }};"></div>
+                                    <a href="#">
+                                        <div class="w-6 h-6 rounded-full border-gray-500 border-[0.5px]" style="background-color: {{ $color }};"></div>
+                                    </a>
                                 @endforeach
                             </div>
                         </blockquote>
