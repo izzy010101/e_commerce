@@ -9,12 +9,17 @@
         </div>
         @vite(['resources/js/app.js'])
 
-        <div class="w-1/2 flex gap-4 items-center justify-end pr-36">
-            <a href="{{ route('wishlist') }}">
+        <div id="app2" class="w-1/2 flex gap-4 items-center justify-end pr-36">
+            <a href="{{ route('wishlist') }}" class="relative">
                 <div class="h-[30px] w-[30px]">
                     <img src="{{ asset('assets/icons/wishlist_icon.png') }}" alt="wishlist_icon" class="h-fit w-full">
                 </div>
+                <!-- Badge to display wishlist count -->
+                <span v-if="wishlistCount > 0" class="absolute top-[-5px] right-[-15px] inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                    @{{ wishlistCount }}</span>
             </a>
+
+
             <a href="/login">
                 <div  class="h-[30px] w-[30px]">
                     <img src="{{ asset('assets/icons/profile_icon.png') }}" alt="profile_icon">

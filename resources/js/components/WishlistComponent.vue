@@ -4,7 +4,7 @@
         <ul>
             <li v-for="item in wishlistItems" :key="item.id">
                 <p>{{ item.name }}</p>
-                <p>Selected Color: {{ item.selectedColor }}</p>
+<!--                <p>Selected Color: {{ item.selectedColor }}</p>-->
                 <p v-if="isLoggedIn && !isAdmin">Price: ${{ item.price }}</p>
                 <button @click="removeFromWishlist(item.id)">Remove</button>
             </li>
