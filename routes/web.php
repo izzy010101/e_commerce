@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\GuestController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Models\Category;
@@ -23,8 +24,9 @@ Route::get('/products/{id}', [ProductController::class, 'show'])->name('products
 //show categories to guests
 Route::get('/category/{id}', [GuestController::class, 'showCategory'])->name('guest.category.show');
 
+//wishlist route
 
-
+Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
 
 
 // Dashboard route, protected by 'auth' and 'verified' middleware

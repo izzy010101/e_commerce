@@ -15,14 +15,24 @@
 
         <!-- Grid Layout for Product Cards -->
         <div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            @foreach ($products as $product)
+            @foreach ($products as $index => $product)
                 <div class="border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 bg-white dark:bg-gray-800 relative">
                     <figure class="flex flex-col items-center justify-center p-8 text-center bg-white dark:bg-gray-800 dark:border-gray-700 relative">
 
                         <!-- Wishlist Heart Icon -->
-                        <button class="absolute top-2 right-2 bg-transparent border-none cursor-pointer">
-                            <img src="{{asset('assets/icons/wishlist_icon.png')}}" alt="wishist_icon_category_guests" class="w-[30px] pt-2 pl-2 hover:w-[35px]">
+                        <div id="app1-{{ $index }}">
+                        <button
+                            @click="addToWishlist({
+                                id: {{ $product->id }},
+                                name: '{{ addslashes($product->name) }}',
+
+                                price: {{ $product->price }}
+                            })"
+                            class="absolute top-2 right-2 bg-transparent border-none cursor-pointer"
+                        >
+                            <img src="{{ asset('assets/icons/wishlist_icon.png') }}" alt="Add to Wishlist" class="wishlist-button w-[30px] pt-2 pl-2 hover:w-[35px]">
                         </button>
+                        </div>
 
                         <!-- Add to cart only if auth -->
                         @if(Auth::check())

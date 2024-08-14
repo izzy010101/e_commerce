@@ -4,17 +4,33 @@
             {{ __('Product Details') }}
         </h2>
     </x-slot>
-
+    @vite(['resources/js/app.js'])
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <!-- Cart and Wishlist -->
-                <div class="flex flex-col items-center justify-center text-center bg-white dark:bg-gray-800 dark:border-gray-700 relative">
-                    <!-- Wishlist Heart Icon -->
-                    <button class="absolute top-2 right-2 bg-transparent border-none cursor-pointer">
-                        <img src="{{ asset('assets/icons/wishlist_icon.png') }}" alt="wishlist_icon_category_guests" class="w-[30px] pt-2 pl-2 hover:w-[35px]">
-                    </button>
+                <div class="flex flex-col items-end justify-end text-center pr-4 bg-white dark:bg-gray-800 dark:border-gray-700 relative">
+                    <div id="app1">
+                        <button
+                            @click="addToWishlist({
+                                id: {{ $product->id }},
+                                name: '{{ addslashes($product->name) }}',
+                                   //add image that is at that moment here as well
+                                price: {{ $product->price }}
+                            })"
+                            class="absolute top-2 right-2 bg-transparent border-none cursor-pointer"
+                        >
+                            <img src="{{ asset('assets/icons/wishlist_icon.png') }}" alt="Add to Wishlist" class="wishlist-button w-[30px] pt-2 pl-2 hover:w-[35px]">
+                        </button>
+                    </div>
+
+                    @vite(['resources/js/app.js'])
+
+
+
+
+
 
                     <!-- Add to cart only if auth -->
                     @if(Auth::check())
@@ -32,7 +48,7 @@
                     @if(Auth::check())
                         <p class="text-md pt-4 text-gray-900 dark:text-white">Price: ${{ $product->price }}</p>
                     @else
-                        <p class="text-md pt-4  text-red-400 underline pb-2 dark:text-white"><a href="{{ route('login') }}">Login to see the price</a></p>
+                        <p class="text-md pt-4 text-red-400 underline pb-2 dark:text-white"><a href="{{ route('login') }}">Login to see the price</a></p>
                     @endif
 
                     <p class="mt-2">Stock: {{ $product->stock }}</p>
@@ -63,25 +79,23 @@
                         <button class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-300 text-black p-2 rounded focus:outline-none" onclick="nextImage(this)">&#10095;</button>
                     </div>
 
-                    @if(Auth::check())
-                        @if(Auth::user()->role === 'admin')
-                            <div class="mt-4">
-                                <a href="{{ route('products.edit', $product->id) }}" class="bg-amber-500 p-2 rounded text-white hover:bg-amber-300 mr-2">Edit</a>
-                                <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="bg-red-500 p-1.5 rounded hover:bg-red-700 text-white">Delete</button>
-                                </form>
-                            </div>
-                        @endif
+                    @if(Auth::check() && Auth::user()->role === 'admin')
+                        <div class="mt-4">
+                            <a href="{{ route('products.edit', $product->id) }}" class="bg-amber-500 p-2 rounded text-white hover:bg-amber-300 mr-2">Edit</a>
+                            <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-500 p-1.5 rounded hover:bg-red-700 text-white">Delete</button>
+                            </form>
+                        </div>
                     @endif
                 </div>
             </div>
         </div>
+
     </div>
 
     <script>
-        // Function to navigate to the previous image
         function prevImage(button) {
             const gallery = button.parentElement;
             const images = gallery.querySelectorAll('.product-image');
@@ -96,7 +110,6 @@
             images[activeIndex].classList.add('active');
         }
 
-        // Function to navigate to the next image
         function nextImage(button) {
             const gallery = button.parentElement;
             const images = gallery.querySelectorAll('.product-image');
@@ -137,6 +150,11 @@
 
             images.forEach(image => {
                 observer.observe(image);
+            });
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelector("button").addEventListener("click", function() {
+                alert("JavaScript click event triggered!");
             });
         });
     </script>

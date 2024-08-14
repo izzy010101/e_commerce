@@ -10,7 +10,7 @@
         @vite(['resources/js/app.js'])
 
         <div class="w-1/2 flex gap-4 items-center justify-end pr-36">
-            <a href="#">
+            <a href="{{ route('wishlist') }}">
                 <div class="h-[30px] w-[30px]">
                     <img src="{{ asset('assets/icons/wishlist_icon.png') }}" alt="wishlist_icon" class="h-fit w-full">
                 </div>
