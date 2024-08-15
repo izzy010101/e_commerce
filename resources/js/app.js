@@ -117,8 +117,28 @@ document.addEventListener('DOMContentLoaded', () => {
                         wishlist.push(product);
                         localStorage.setItem('wishlist_items', JSON.stringify(wishlist));
                         console.log("Product added to wishlist:", wishlist);
+
+
+
+                        // Show SweetAlert and refresh the page
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Product added to wishlist!',
+                            showConfirmButton: false,
+                            timer: 2000
+                        }).then(() => {
+                            location.reload();
+                        });
                     } else {
                         console.log("Product already in wishlist");
+
+                        // Show SweetAlert for already existing product
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Product already in wishlist!',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
                     }
                 }
             }
