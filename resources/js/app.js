@@ -54,7 +54,7 @@ const app1 = createApp({
                 console.log("Product already in wishlist");
                 // Show SweetAlert for already existing product
                 Swal.fire({
-                    icon: 'info',
+                    icon: 'warning',
                     title: 'Product already in wishlist!',
                     showConfirmButton: false,
                     timer: 2000
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         // Show SweetAlert for already existing product
                         Swal.fire({
-                            icon: 'info',
+                            icon: 'warning',
                             title: 'Product already in wishlist!',
                             showConfirmButton: false,
                             timer: 2000

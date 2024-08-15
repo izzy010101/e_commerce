@@ -10,6 +10,7 @@
             </li>
         </ul>
         <p v-if="isLoggedIn && !isAdmin">Total: ${{ subtotal }}</p>
+        <p v-else-if="wishlistItems.length === 0">Your wishlist is empty.</p>
     </div>
 </template>
 
@@ -45,7 +46,7 @@ export default {
 
         const userMeta = document.querySelector('meta[name="user"]');
         if (userMeta) {
-            const user = JSON.parse(userMeta.getAttribute('content'));
+            const user = userMeta.getAttribute('content');
             this.isLoggedIn = true;
             this.isAdmin = user.role === 'admin';
         }
