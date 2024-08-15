@@ -10,6 +10,7 @@ Alpine.start();
 
 const state = reactive({
     wishlistItems: JSON.parse(localStorage.getItem('wishlist_items')) || [],
+    selectedColor: '', // Default selected color
 });
 
 // Initialize Vue for the search bar
@@ -19,7 +20,6 @@ app.mount('#app');
 
 // Initialize Vue for the wishlist
 const app1 = createApp({
-
     computed: {
         wishlist() {
             return state.wishlistItems;
@@ -30,6 +30,17 @@ const app1 = createApp({
     },
     methods: {
         addToWishlist(product) {
+            // Check the selected color before adding to the wishlist
+            console.log("Selected color before adding to wishlist:", state.selectedColor);
+                // Get the active image path
+                const activeImageElement = document.querySelector('.product-image.active');
+                const activeImagePath = activeImageElement ? activeImageElement.getAttribute('data-path') : '';
+
+                // Add selected color and active image to the product object
+                product.selectedColor = state.selectedColor;
+                product.image = activeImagePath;
+
+
             console.log("Adding to wishlist:", product);
             let wishlist = this.wishlistItems;
             const exists = wishlist.find(item => item.id === product.id);
@@ -110,6 +121,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const appInstance = createApp({
             methods: {
                 addToWishlist(product) {
+                    // Check the selected color before adding to the wishlist
+                    console.log("Selected color before adding to wishlist:", state.selectedColor);
+
+
+
+
+                    // Get the active image path
+                    const activeImageElement = document.querySelector('.product-image.active');
+                    const activeImagePath = activeImageElement ? activeImageElement.getAttribute('data-path') : '';
+
+                    // Add selected color and active image to the product object
+                    product.selectedColor = state.selectedColor;
+                    product.image = activeImagePath;
+
                     let wishlist = JSON.parse(localStorage.getItem('wishlist_items')) || [];
                     const exists = wishlist.find(item => item.id === product.id);
 

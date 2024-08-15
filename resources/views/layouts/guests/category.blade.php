@@ -25,8 +25,8 @@
                             @click="addToWishlist({
                                 id: {{ $product->id }},
                                 name: '{{ addslashes($product->name) }}',
+                                price: {{ $product->price }},
 
-                                price: {{ $product->price }}
                             })"
                             class="absolute top-2 right-2 bg-transparent border-none cursor-pointer"
                         >

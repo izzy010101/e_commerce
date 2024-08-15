@@ -3,18 +3,20 @@
         <h2>My Wishlist</h2>
         <ul>
             <li v-for="item in wishlistItems" :key="item.id">
+                <img :src="item.image" :alt="item.name" class="w-24 h-24 object-cover rounded-lg mr-4" />
                 <p>{{ item.name }}</p>
-<!--                <p>Selected Color: {{ item.selectedColor }}</p>-->
                 <p v-if="isLoggedIn && !isAdmin">Price: ${{ item.price }}</p>
+
                 <button @click="removeFromWishlist(item.id)">Remove</button>
             </li>
         </ul>
         <p v-if="isLoggedIn && !isAdmin">Total: ${{ subtotal }}</p>
-        <p v-else-if="wishlistItems.length === 0">Your wishlist is empty.</p>
     </div>
 </template>
 
 <script>
+import Swal from "sweetalert2";
+
 export default {
     data() {
         return {
@@ -32,10 +34,19 @@ export default {
     },
     methods: {
         removeFromWishlist(productId) {
-            console.log('Removing item with ID:', productId);
             this.wishlistItems = this.wishlistItems.filter(item => item.id !== productId);
             localStorage.setItem('wishlist_items', JSON.stringify(this.wishlistItems));
-            console.log('Updated wishlist:', this.wishlistItems);
+
+
+            // Show SweetAlert and refresh the page
+            Swal.fire({
+                icon: 'success',
+                title: 'Product removed from wishlist!',
+                showConfirmButton: false,
+                timer: 2000
+            }).then(() => {
+                location.reload();
+            });
         }
     },
     mounted() {
@@ -46,14 +57,10 @@ export default {
 
         const userMeta = document.querySelector('meta[name="user"]');
         if (userMeta) {
-            const user = userMeta.getAttribute('content');
+            const user = JSON.parse(userMeta.getAttribute('content'));
             this.isLoggedIn = true;
             this.isAdmin = user.role === 'admin';
         }
     }
 }
 </script>
-
-<style scoped>
-/* Add your component-specific styles here */
-</style>

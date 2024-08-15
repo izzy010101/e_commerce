@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-
-    <meta name="user" content="{{ Auth::user() }}">
+{{--    passing user data only if necessary--}}
+    @if(Auth::check())
+        <meta name="user" content="{{ json_encode(Auth::user()) }}">
+    @endif
 
     <title>{{ config('app.name', 'Ziara Clothing') }}</title>
 

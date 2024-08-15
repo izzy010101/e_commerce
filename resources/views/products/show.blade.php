@@ -4,10 +4,9 @@
             {{ __('Product Details') }}
         </h2>
     </x-slot>
-    @vite(['resources/js/app.js'])
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <!-- Cart and Wishlist -->
                 <div class="flex flex-col items-end justify-end text-center pr-4 bg-white dark:bg-gray-800 dark:border-gray-700 relative">
@@ -16,28 +15,14 @@
                             @click="addToWishlist({
                                 id: {{ $product->id }},
                                 name: '{{ addslashes($product->name) }}',
-                                   //add image that is at that moment here as well
-                                price: {{ $product->price }}
+                                price: {{ $product->price }},
+
                             })"
                             class="absolute top-2 right-2 bg-transparent border-none cursor-pointer"
                         >
                             <img src="{{ asset('assets/icons/wishlist_icon.png') }}" alt="Add to Wishlist" class="wishlist-button w-[30px] pt-2 pl-2 hover:w-[35px]">
                         </button>
                     </div>
-
-                    @vite(['resources/js/app.js'])
-
-
-
-
-
-
-                    <!-- Add to cart only if auth -->
-                    @if(Auth::check())
-                        <button class="absolute top-2 right-10 bg-transparent border-none cursor-pointer">
-                            <img src="{{ asset('assets/icons/cart_icon.png') }}" alt="cart_icon_auth" class="w-[30px] pt-2 pl-2 hover:w-[35px]">
-                        </button>
-                    @endif
                 </div>
 
                 <div class="p-6 text-gray-900 dark:text-gray-100">
@@ -55,19 +40,22 @@
                     <p class="mt-2">Category: {{ $product->category->name }}</p>
 
                     <!-- Display Color Circles -->
-                    <div class="flex w-full space-x-2 mt-2 mb-2">
+                    <div id="color-selection" class="flex w-full space-x-2 mt-2 mb-2">
                         <span>Colors:</span>
                         @foreach (json_decode($product->colors) as $color)
-                            <a href="#">
-                                <div class="w-6 h-6 rounded-full border-gray-500 border-[0.5px]" style="background-color: {{ $color }};"></div>
-                            </a>
+                            <div @click="selectedColor = '{{ $color }}'"
+                                 class="w-6 h-6 rounded-full border-gray-500 border-[0.5px]"
+                                 style="background-color: {{ $color }}; cursor: pointer;">
+                            </div>
                         @endforeach
                     </div>
 
+
+
                     <!-- Product Image Gallery -->
-                    <div class="relative w-[300px] h-[300px] mt-6">
+                    <div id="image-gallery" class="relative w-[300px] h-[300px] mt-6" data-current-image="{{ $product->images[0]->path }}">
                         @foreach($product->images as $index => $image)
-                            <img src="{{ asset('assets/images/placeholder.png') }}"
+                            <img src="{{ asset($image->path) }}"
                                  data-path="{{ $image->path }}"
                                  alt="{{ $product->name }}"
                                  class="product-image w-full h-full object-cover rounded-lg absolute inset-0 {{ $index === 0 ? 'active' : 'hidden' }}"
@@ -92,7 +80,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <script>
@@ -108,6 +95,9 @@
 
             images[activeIndex].classList.remove('hidden');
             images[activeIndex].classList.add('active');
+
+            // Update the current image in the gallery
+            document.querySelector('#image-gallery').dataset.currentImage = images[activeIndex].getAttribute('data-path');
         }
 
         function nextImage(button) {
@@ -122,6 +112,9 @@
 
             images[activeIndex].classList.remove('hidden');
             images[activeIndex].classList.add('active');
+
+            // Update the current image in the gallery
+            document.querySelector('#image-gallery').dataset.currentImage = images[activeIndex].getAttribute('data-path');
         }
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -150,11 +143,6 @@
 
             images.forEach(image => {
                 observer.observe(image);
-            });
-        });
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelector("button").addEventListener("click", function() {
-                alert("JavaScript click event triggered!");
             });
         });
     </script>
