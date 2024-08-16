@@ -12,18 +12,15 @@ const state = reactive({
     selectedColor: '', // Default selected color
 });
 
-// Initialize Vue for the search bar
 const app = createApp({});
 app.component('search-bar-component', SearchBarComponent);
 app.mount('#app');
-
-// Initialize Vue for the wishlist
 
 const app1 = createApp({
     data() {
         return {
             wishlistItems: [],
-            selectedColor: null,  // Store the selected color
+            selectedColor: '',
         };
     },
     computed: {
@@ -40,20 +37,11 @@ const app1 = createApp({
             console.log("Selected color:", this.selectedColor);
         },
         addToWishlist(product) {
-            console.log("Adding to wishlist:", product);
-
-            // Ensure that a color is selected
-            const color = this.selectedColor || 'defaultColor';
-            product.color = color;
-
-            // Ensure that the currently active image is available
             const activeImageElement = document.querySelector('.product-image.active');
-            if (!activeImageElement) {
-                console.error('Active image element not found');
-                return;
-            }
-            const selectedImage = activeImageElement.getAttribute('data-path');
-            product.image = selectedImage;
+            const activeImagePath = activeImageElement ? activeImageElement.getAttribute('data-path') : '';
+
+            product.selectedColor = this.selectedColor; // Use the selected color from this instance
+            product.image = activeImagePath;
 
             let wishlist = this.wishlistItems;
             const exists = wishlist.find(item => item.id === product.id && item.color === product.color);
@@ -62,9 +50,7 @@ const app1 = createApp({
                 wishlist.push(product);
                 this.wishlistItems = wishlist;
                 localStorage.setItem('wishlist_items', JSON.stringify(wishlist));
-                console.log("Product added to wishlist:", wishlist);
 
-                // Show SweetAlert and refresh the page
                 Swal.fire({
                     icon: 'success',
                     title: 'Product added to wishlist!',
@@ -74,8 +60,6 @@ const app1 = createApp({
                     location.reload();
                 });
             } else {
-                console.log("Product already in wishlist");
-                // Show SweetAlert for already existing product
                 Swal.fire({
                     icon: 'info',
                     title: 'Product already in wishlist!',
@@ -96,12 +80,9 @@ const app1 = createApp({
     }
 });
 
-
-// Mount the WishlistComponent to the main wishlist Vue instance
 app1.component('wishlist-component', WishlistComponent);
 app1.mount('#app1');
 
-// Initialize Vue for the wishlist count
 const app2 = createApp({
     computed: {
         wishlistCount() {
@@ -122,32 +103,33 @@ const app2 = createApp({
 
 app2.mount('#app2');
 
-// Share wishlist data between apps
-app.config.globalProperties.wishlistItems = app1.wishlistItems;
-
-// Mount Vue instance on all wishlist buttons across the page
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('[id^="app1-"]').forEach((element) => {
         const appInstance = createApp({
+            data() {
+                return {
+                    selectedColor: '' // Initialize selected color
+                };
+            },
             methods: {
+                setColor(color) {
+                    this.selectedColor = color;
+                    console.log("Selected color:", this.selectedColor);
+                },
                 addToWishlist(product) {
-                    // Get the active image path
                     const activeImageElement = document.querySelector('.product-image.active');
                     const activeImagePath = activeImageElement ? activeImageElement.getAttribute('data-path') : '';
 
-                    // Add selected color and active image to the product object
-                    product.selectedColor = state.selectedColor;
+                    product.selectedColor = this.selectedColor; // Use the selected color from this instance
                     product.image = activeImagePath;
 
                     let wishlist = JSON.parse(localStorage.getItem('wishlist_items')) || [];
-                    const exists = wishlist.find(item => item.id === product.id);
+                    const exists = wishlist.find(item => item.id === product.id && item.selectedColor === product.selectedColor);
 
                     if (!exists) {
                         wishlist.push(product);
                         localStorage.setItem('wishlist_items', JSON.stringify(wishlist));
-                        console.log("Product added to wishlist:", wishlist);
 
-                        // Show SweetAlert and refresh the page
                         Swal.fire({
                             icon: 'success',
                             title: 'Product added to wishlist!',
@@ -157,9 +139,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             location.reload();
                         });
                     } else {
-                        console.log("Product already in wishlist");
-
-                        // Show SweetAlert for already existing product
                         Swal.fire({
                             icon: 'warning',
                             title: 'Product already in wishlist!',
@@ -170,6 +149,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+
         appInstance.mount(`#${element.id}`);
     });
+
 });

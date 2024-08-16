@@ -1,13 +1,4 @@
 <x-guest-layout>
-    @push('head')
-        <!-- Preload key images -->
-        @foreach ($products as $product)
-            @foreach($product->images->take(2) as $image)
-                <link rel="preload" href="{{ $image->path }}" as="image">
-            @endforeach
-        @endforeach
-    @endpush
-
     <div class="container mx-auto p-4">
         <h1 class="text-2xl font-bold mb-4">{{ $category->name }}</h1>
 
@@ -15,32 +6,42 @@
 
         <!-- Grid Layout for Product Cards -->
         <div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            @foreach ($products as $index => $product)
+            @foreach ($products as $product)
                 <div class="border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 bg-white dark:bg-gray-800 relative">
                     <figure class="flex flex-col items-center justify-center p-8 text-center bg-white dark:bg-gray-800 dark:border-gray-700 relative">
 
-                        <!-- Wishlist Heart Icon -->
-                        <div id="app1-{{ $index }}">
-                        <button
-                            @click="addToWishlist({
-                                id: {{ $product->id }},
-                                name: '{{ addslashes($product->name) }}',
-                                price: {{ $product->price }},
+                        <!-- circles of colors -->
+                        <div id="app1-{{ $loop->index }}">
+                            <!-- Display Color Circles -->
+                            <div class="flex justify-center w-full space-x-2 mt-2">
+                                @foreach (json_decode($product->colors) as $color)
+                                    <div class="w-6 h-6 rounded-full border-gray-500 border-[0.5px] cursor-pointer"
+                                         style="background-color: {{ $color }};"
+                                         @click="setColor('{{ $color }}')">
+                                    </div>
+                                @endforeach
+                            </div>
 
-                            })"
-                            class="absolute top-2 right-2 bg-transparent border-none cursor-pointer"
-                        >
-                            <img src="{{ asset('assets/icons/wishlist_icon.png') }}" alt="Add to Wishlist" class="wishlist-button w-[30px] pt-2 pl-2 hover:w-[35px]">
-                        </button>
+
+                            <!-- wishlist button -->
+                            <button
+                                @click="addToWishlist({
+                                    id: {{ $product->id }},
+                                    name: '{{ addslashes($product->name) }}',
+                                    price: {{ $product->price }},
+                                    color: selectedColor,
+                                })"
+                                class="absolute top-2 right-2 bg-transparent border-none cursor-pointer"
+                            >
+                                <img src="{{ asset('assets/icons/wishlist_icon.png') }}" alt="Add to Wishlist" class="wishlist-button w-[30px] pt-2 pl-2 hover:w-[35px]">
+                            </button>
                         </div>
-                        <!-- end of wishlist part -->
 
-
-                        <!-- Add to cart only if auth -->
+                        <!-- Add to Cart Button -->
                         @if(Auth::check())
-                            <form action="{{ route('products.addToCart', $product->id) }}" method="POST">
+                            <form action="{{ route('products.addToCart', $product->id) }}" method="POST" id="add-to-cart-form-{{ $product->id }}">
                                 @csrf
-                                <input type="hidden" name="selected_color" :value="selectedColor">
+                                <input type="hidden" name="selected_color" id="selectedColor_{{ $product->id }}">
                                 <button class="absolute top-2 right-10 bg-transparent border-none cursor-pointer">
                                     <img src="{{asset('assets/icons/cart_icon.png')}}" alt="cart_icon_auth" class="w-[30px] pt-2 pl-2 hover:w-[35px]">
                                 </button>
@@ -57,7 +58,6 @@
                                      loading="lazy"
                                      onerror="this.onerror=null;this.src='{{ asset('assets/images/placeholder.png') }}';">
                             @endforeach
-                            <!-- Left and Right Navigation Buttons -->
                             <button class="absolute left-[-20px] top-1/2 transform -translate-y-1/2 text-black p-1 rounded focus:outline-none" onclick="prevImage(this)">&#10094;</button>
                             <button class="absolute right-[-20px] top-1/2 transform -translate-y-1/2 text-black p-1 rounded focus:outline-none" onclick="nextImage(this)">&#10095;</button>
                         </div>
@@ -75,17 +75,6 @@
                             @endif
 
                             <p class="text-sm text-gray-500 dark:text-gray-400">In Stock: {{ $product->stock }}</p>
-
-                            <!-- Display Color Circles -->
-                            <div class="flex justify-center w-full space-x-2 mt-2">
-                                @foreach (json_decode($product->colors) as $color)
-                                    <a href="#" @click.prevent="setColor('{{ $color }}')">
-                                        <div class="w-6 h-6 rounded-full border-gray-500 border-[0.5px]" style="background-color: {{ $color }};"></div>
-                                    </a>
-                                @endforeach
-                            </div>
-                            <input type="hidden" name="selected_color" :value="selectedColor">
-
                         </blockquote>
                     </figure>
                 </div>
