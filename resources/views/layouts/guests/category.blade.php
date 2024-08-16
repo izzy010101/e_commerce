@@ -9,8 +9,6 @@
             @foreach ($products as $product)
                 <div class="border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 bg-white dark:bg-gray-800 relative">
                     <figure class="flex flex-col items-center justify-center p-8 text-center bg-white dark:bg-gray-800 dark:border-gray-700 relative">
-
-                        <!-- circles of colors -->
                         <div id="app1-{{ $loop->index }}">
                             <!-- Display Color Circles -->
                             <div class="flex justify-center w-full space-x-2 mt-2">

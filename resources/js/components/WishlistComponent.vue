@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>My Wishlist</h2>
+        <h2 class="text-2xl pb-4">My Wishlist:</h2>
         <ul>
             <li v-for="item in wishlistItems" :key="item.id">
                 <img :src="item.image" :alt="item.name" class="w-24 h-24 object-cover rounded-lg mr-4" />
@@ -8,10 +8,10 @@
                 <p>Color: {{ item.color }}</p>
                 <p v-if="isLoggedIn && !isAdmin">Price: ${{ item.price }}</p>
 
-                <button @click="removeFromWishlist(item.id)">Remove</button>
+                <button @click="removeFromWishlist(item.id)" class="text-red-500">Remove</button>
             </li>
         </ul>
-        <p v-if="isLoggedIn && !isAdmin">Total: ${{ subtotal }}</p>
+        <p v-if="isLoggedIn && !isAdmin" class="mt-4 ">Total: ${{ subtotal }}</p>
     </div>
 </template>
 

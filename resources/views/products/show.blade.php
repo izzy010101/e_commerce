@@ -9,14 +9,25 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <!-- Cart and Wishlist -->
-                <div class="flex flex-col items-end justify-end text-center pr-4 bg-white dark:bg-gray-800 dark:border-gray-700 relative">
+                <div class="flex flex-col pl-6 pt-6 text-center pr-4 bg-white dark:bg-gray-800 dark:border-gray-700 relative">
                     <div id="app1">
+                        <!-- Update the color selection to properly set the selected color  NE RADI GOVNO-->
+                        <div class="flex w-full space-x-2 mt-2 mb-2">
+                            <span>Colors:</span>
+                            @foreach (json_decode($product->colors) as $color)
+                                <div class="w-6 h-6 rounded-full border-gray-500 border-[0.5px] cursor-pointer"
+                                     style="background-color: {{ $color }};"
+                                     @click="setColor('{{ $color }}')">
+                                </div>
+                            @endforeach
+                        </div>
 
                         <button
                             @click="addToWishlist({
                                 id: {{ $product->id }},
                                 name: '{{ addslashes($product->name) }}',
                                 price: {{ $product->price }},
+                                color: selectedColor,
                             })"
                             class="absolute top-2 right-2 bg-transparent border-none cursor-pointer"
                         >
@@ -49,15 +60,7 @@
                     <p class="mt-2">Stock: {{ $product->stock }}</p>
                     <p class="mt-2">Category: {{ $product->category->name }}</p>
 
-                    <!-- Update the color selection to properly set the selected color  NE RADI GOVNO-->
-                    <div id="color-selection" class="flex w-full space-x-2 mt-2 mb-2">
-                        <span>Colors:</span>
-                        @foreach (json_decode($product->colors) as $color)
-                            <a href="#" @click.stop.prevent="setColor('{{ $color }}')">
-                                <div class="w-6 h-6 rounded-full border-gray-500 border-[0.5px]" style="background-color: {{ $color }};"></div>
-                            </a>
-                        @endforeach
-                    </div>
+
 
 
 
