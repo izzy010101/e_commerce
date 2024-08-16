@@ -5,6 +5,7 @@
             <li v-for="item in wishlistItems" :key="item.id">
                 <img :src="item.image" :alt="item.name" class="w-24 h-24 object-cover rounded-lg mr-4" />
                 <p>{{ item.name }}</p>
+                <p>Color: {{ item.color }}</p>
                 <p v-if="isLoggedIn && !isAdmin">Price: ${{ item.price }}</p>
 
                 <button @click="removeFromWishlist(item.id)">Remove</button>

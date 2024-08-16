@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Cart;
+use App\Models\CartItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -132,6 +135,51 @@ class ProductController extends Controller
         }
 
         return response()->json($products);
+    }
+
+
+//    add to cart logic
+    public function addToCart(Request $request, $id)
+    {
+        // Find the product by ID
+        $product = Product::findOrFail($id);
+        //get the selected color
+        $selectedColor = $request->input('selected_color');
+
+        // Get the current user's cart or create a new one
+        $cart = Cart::firstOrCreate([
+            'user_id' => auth()->id(),
+        ]);
+
+        // Check if the product is already in the cart
+        $cartItem = CartItem::where('cart_id', $cart->id)
+            ->where('product_id', $product->id)
+            ->first();
+
+        if ($cartItem) {
+            // If the product is already in the cart, increase the quantity
+            $cartItem->quantity += 1;
+            $cartItem->save();
+        } else {
+            // If the product is not in the cart, add it
+            CartItem::create([
+                'cart_id' => $cart->id,
+                'product_id' => $product->id,
+                'quantity' => 1,
+                'color' => $selectedColor, // Store the selected color
+            ]);
+        }
+
+        // Redirect to the cart with a success message
+        return redirect()->route('cart.index')->with('success', 'Product added to cart');
+    }
+
+    public function viewCart()
+    {
+        $user = Auth::user();
+        $cart = Cart::where('user_id', $user->id)->with('cartItems.product')->first();
+
+        return view('cart.view', compact('cart'));
     }
 
 

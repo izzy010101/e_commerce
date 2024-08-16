@@ -1,9 +1,8 @@
-import {createApp, reactive} from 'vue';
+import { createApp, reactive } from 'vue';
 import SearchBarComponent from './components/SearchBarComponent.vue';
 import WishlistComponent from './components/WishlistComponent.vue';
 import Alpine from 'alpinejs';
 import Swal from 'sweetalert2';
-
 
 window.Alpine = Alpine;
 Alpine.start();
@@ -19,38 +18,51 @@ app.component('search-bar-component', SearchBarComponent);
 app.mount('#app');
 
 // Initialize Vue for the wishlist
+
 const app1 = createApp({
+    data() {
+        return {
+            wishlistItems: [],
+            selectedColor: null,  // Store the selected color
+        };
+    },
     computed: {
         wishlist() {
-            return state.wishlistItems;
+            return this.wishlistItems;
         },
         wishlistCount() {
             return this.wishlistItems.length;
         }
     },
     methods: {
+        setColor(color) {
+            this.selectedColor = color;
+            console.log("Selected color:", this.selectedColor);
+        },
         addToWishlist(product) {
-            // Check the selected color before adding to the wishlist
-            console.log("Selected color before adding to wishlist:", state.selectedColor);
-                // Get the active image path
-                const activeImageElement = document.querySelector('.product-image.active');
-                const activeImagePath = activeImageElement ? activeImageElement.getAttribute('data-path') : '';
-
-                // Add selected color and active image to the product object
-                product.selectedColor = state.selectedColor;
-                product.image = activeImagePath;
-
-
             console.log("Adding to wishlist:", product);
+
+            // Ensure that a color is selected
+            const color = this.selectedColor || 'defaultColor';
+            product.color = color;
+
+            // Ensure that the currently active image is available
+            const activeImageElement = document.querySelector('.product-image.active');
+            if (!activeImageElement) {
+                console.error('Active image element not found');
+                return;
+            }
+            const selectedImage = activeImageElement.getAttribute('data-path');
+            product.image = selectedImage;
+
             let wishlist = this.wishlistItems;
-            const exists = wishlist.find(item => item.id === product.id);
+            const exists = wishlist.find(item => item.id === product.id && item.color === product.color);
 
             if (!exists) {
                 wishlist.push(product);
                 this.wishlistItems = wishlist;
                 localStorage.setItem('wishlist_items', JSON.stringify(wishlist));
                 console.log("Product added to wishlist:", wishlist);
-
 
                 // Show SweetAlert and refresh the page
                 Swal.fire({
@@ -65,7 +77,7 @@ const app1 = createApp({
                 console.log("Product already in wishlist");
                 // Show SweetAlert for already existing product
                 Swal.fire({
-                    icon: 'warning',
+                    icon: 'info',
                     title: 'Product already in wishlist!',
                     showConfirmButton: false,
                     timer: 2000
@@ -84,14 +96,13 @@ const app1 = createApp({
     }
 });
 
+
 // Mount the WishlistComponent to the main wishlist Vue instance
 app1.component('wishlist-component', WishlistComponent);
 app1.mount('#app1');
 
-
 // Initialize Vue for the wishlist count
 const app2 = createApp({
-
     computed: {
         wishlistCount() {
             return state.wishlistItems.length;
@@ -111,7 +122,6 @@ const app2 = createApp({
 
 app2.mount('#app2');
 
-
 // Share wishlist data between apps
 app.config.globalProperties.wishlistItems = app1.wishlistItems;
 
@@ -121,12 +131,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const appInstance = createApp({
             methods: {
                 addToWishlist(product) {
-                    // Check the selected color before adding to the wishlist
-                    console.log("Selected color before adding to wishlist:", state.selectedColor);
-
-
-
-
                     // Get the active image path
                     const activeImageElement = document.querySelector('.product-image.active');
                     const activeImagePath = activeImageElement ? activeImageElement.getAttribute('data-path') : '';
@@ -142,8 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         wishlist.push(product);
                         localStorage.setItem('wishlist_items', JSON.stringify(wishlist));
                         console.log("Product added to wishlist:", wishlist);
-
-
 
                         // Show SweetAlert and refresh the page
                         Swal.fire({

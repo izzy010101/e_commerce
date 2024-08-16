@@ -33,12 +33,18 @@
                             <img src="{{ asset('assets/icons/wishlist_icon.png') }}" alt="Add to Wishlist" class="wishlist-button w-[30px] pt-2 pl-2 hover:w-[35px]">
                         </button>
                         </div>
+                        <!-- end of wishlist part -->
+
 
                         <!-- Add to cart only if auth -->
                         @if(Auth::check())
-                            <button class="absolute top-2 right-10 bg-transparent border-none cursor-pointer">
-                                <img src="{{asset('assets/icons/cart_icon.png')}}" alt="cart_icon_auth" class="w-[30px] pt-2 pl-2 hover:w-[35px]">
-                            </button>
+                            <form action="{{ route('products.addToCart', $product->id) }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="selected_color" :value="selectedColor">
+                                <button class="absolute top-2 right-10 bg-transparent border-none cursor-pointer">
+                                    <img src="{{asset('assets/icons/cart_icon.png')}}" alt="cart_icon_auth" class="w-[30px] pt-2 pl-2 hover:w-[35px]">
+                                </button>
+                            </form>
                         @endif
 
                         <!-- Product Image Gallery -->
@@ -73,11 +79,13 @@
                             <!-- Display Color Circles -->
                             <div class="flex justify-center w-full space-x-2 mt-2">
                                 @foreach (json_decode($product->colors) as $color)
-                                    <a href="#">
+                                    <a href="#" @click.prevent="setColor('{{ $color }}')">
                                         <div class="w-6 h-6 rounded-full border-gray-500 border-[0.5px]" style="background-color: {{ $color }};"></div>
                                     </a>
                                 @endforeach
                             </div>
+                            <input type="hidden" name="selected_color" :value="selectedColor">
+
                         </blockquote>
                     </figure>
                 </div>

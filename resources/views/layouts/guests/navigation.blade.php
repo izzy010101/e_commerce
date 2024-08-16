@@ -20,14 +20,14 @@
             </a>
 
 
-            <a href="/login">
+            <a href="{{ route('login') }}">
                 <div  class="h-[30px] w-[30px]">
                     <img src="{{ asset('assets/icons/profile_icon.png') }}" alt="profile_icon">
                 </div>
             </a>
 
             @if(Auth::check())
-                <a href="#">
+                <a href="{{ route('cart.index') }} ">
                     <div  class="h-[30px] w-[30px]">
                         <img src="{{ asset('assets/icons/cart_icon.png') }}" alt="profile_icon">
                     </div>
