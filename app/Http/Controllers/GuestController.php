@@ -23,4 +23,18 @@ class GuestController extends Controller
         return view('layouts.guests.category', compact('category', 'products'));
     }
 
+
+    public function personalization() {
+        return view('layouts.guests.personalization');
+    }
+
+    public function customorder() {
+        return view('layouts.guests.customorder');
+    }
+
+    public function moderndesign() {
+        return view('layouts.guests.moderndesign');
+    }
+
+
 }

@@ -17,6 +17,11 @@ use App\Models\Category;
 // Home page route
 Route::get('/', [GuestController::class, 'home']);
 
+// home page section with videos, routes for find out more
+Route::get('/personalization', [GuestController::class, 'personalization'])->name('personalization');
+Route::get('/customorder', [GuestController::class, 'customorder'])->name('customorder');
+Route::get('/moderndesign', [GuestController::class, 'moderndesign'])->name('moderndesign');
+
 //search bar at navigation all website
 Route::get('/search-products', [ProductController::class, 'search'])->name('products.search');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');

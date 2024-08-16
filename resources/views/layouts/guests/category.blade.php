@@ -4,14 +4,33 @@
 
         <h2 class="text-xl font-bold mt-4">Products:</h2>
 
+
         <!-- Grid Layout for Product Cards -->
         <div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             @foreach ($products as $product)
                 <div class="border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 bg-white dark:bg-gray-800 relative">
                     <figure class="flex flex-col items-center justify-center p-8 text-center bg-white dark:bg-gray-800 dark:border-gray-700 relative">
+                        <!-- Product Details -->
+                        <blockquote class="max-w-2xl mb-4 text-gray-500 lg:mb-8 dark:text-gray-400">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ $product->name }}</h3>
+                            <p class="my-4">{{ $product->description }}</p>
+
+                            <!-- Conditionally Display Price or Login Link -->
+                            @if(Auth::check())
+                                <p class="text-md text-gray-900 dark:text-white">${{ $product->price }}</p>
+                            @else
+                                <p class="text-md text-red-400 underline pb-2 dark:text-white"><a href="{{ route('login') }}">Login to see the price</a></p>
+                            @endif
+
+                            <p class="text-sm text-gray-500 dark:text-gray-400">In Stock: {{ $product->stock }}</p>
+                        </blockquote>
+
+
                         <div id="app1-{{ $loop->index }}">
+
+
                             <!-- Display Color Circles -->
-                            <div class="flex justify-center w-full space-x-2 mt-2">
+                            <div class="flex pb-4 justify-center w-full space-x-2 mt-2">
                                 @foreach (json_decode($product->colors) as $color)
                                     <div class="w-6 h-6 rounded-full border-gray-500 border-[0.5px] cursor-pointer"
                                          style="background-color: {{ $color }};"
@@ -59,21 +78,6 @@
                             <button class="absolute left-[-20px] top-1/2 transform -translate-y-1/2 text-black p-1 rounded focus:outline-none" onclick="prevImage(this)">&#10094;</button>
                             <button class="absolute right-[-20px] top-1/2 transform -translate-y-1/2 text-black p-1 rounded focus:outline-none" onclick="nextImage(this)">&#10095;</button>
                         </div>
-
-                        <!-- Product Details -->
-                        <blockquote class="max-w-2xl mb-4 text-gray-500 lg:mb-8 dark:text-gray-400">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ $product->name }}</h3>
-                            <p class="my-4">{{ $product->description }}</p>
-
-                            <!-- Conditionally Display Price or Login Link -->
-                            @if(Auth::check())
-                                <p class="text-md text-gray-900 dark:text-white">${{ $product->price }}</p>
-                            @else
-                                <p class="text-md text-red-400 underline pb-2 dark:text-white"><a href="{{ route('login') }}">Login to see the price</a></p>
-                            @endif
-
-                            <p class="text-sm text-gray-500 dark:text-gray-400">In Stock: {{ $product->stock }}</p>
-                        </blockquote>
                     </figure>
                 </div>
             @endforeach

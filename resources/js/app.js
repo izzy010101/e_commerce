@@ -35,6 +35,11 @@ const app1 = createApp({
         setColor(color) {
             this.selectedColor = color;
             console.log("Selected color:", this.selectedColor);
+
+            const hiddenInput = element.querySelector('input[name="selected_color"]');
+            if (hiddenInput) {
+                hiddenInput.value = color;
+            }
         },
         addToWishlist(product) {
             const activeImageElement = document.querySelector('.product-image.active');

@@ -166,11 +166,10 @@ class ProductController extends Controller
                 'cart_id' => $cart->id,
                 'product_id' => $product->id,
                 'quantity' => 1,
-                'color' => $selectedColor, // Store the selected color
+                'color' => $request->input('selected_color'),
             ]);
         }
-
-        // Redirect to the cart with a success message
+         //mozda ovde staj same page ali da oznaci da je uslo u korpu i da izbaci neki sweet alert
         return redirect()->route('cart.index')->with('success', 'Product added to cart');
     }
 
