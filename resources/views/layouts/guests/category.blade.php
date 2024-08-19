@@ -60,7 +60,7 @@
                                 @csrf
                                 <input type="hidden" name="selected_color" id="selectedColor_{{ $product->id }}">
                                 <button class="absolute top-2 right-10 bg-transparent border-none cursor-pointer">
-                                    <img src="{{asset('assets/icons/cart_icon.png')}}" alt="cart_icon_auth" class="w-[30px] pt-2 pl-2 hover:w-[35px]">
+                                    <img src="{{asset('assets/icons/cart_icon.png')}}" alt="cart_icon_auth_categblade" class="w-[30px] pt-2 pl-2 hover:w-[35px]">
                                 </button>
                             </form>
                         @endif

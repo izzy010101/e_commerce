@@ -13,6 +13,8 @@
                     @if ($cart && $cart->items->count())
                         <ul>
                             @foreach ($cart->items as $item)
+                              @php( var_dump($item->product->color));
+
                                 <li class="mb-4">
                                     <div class="flex items-center">
                                         <img src="{{ $item->product->images->first()->path }}" alt="{{ $item->product->name }}" class="w-16 h-16 object-cover rounded">

@@ -11,7 +11,6 @@
                 <!-- Cart and Wishlist -->
                 <div class="flex flex-col pl-6 pt-6 text-center pr-4 bg-white dark:bg-gray-800 dark:border-gray-700 relative">
                     <div id="app1">
-                        <!-- Update the color selection to properly set the selected color  NE RADI GOVNO-->
                         <div class="flex w-full space-x-2 mt-2 mb-2">
                             <span>Colors:</span>
                             @foreach (json_decode($product->colors) as $color)
@@ -34,13 +33,14 @@
                             <img src="{{ asset('assets/icons/wishlist_icon.png') }}" alt="Add to Wishlist" class="wishlist-button w-[30px] pt-2 pl-2 hover:w-[35px]">
                         </button>
                     </div>
+
                     <!-- Add to cart only if auth -->
                     @if(Auth::check())
                         <form action="{{ route('products.addToCart', $product->id) }}" method="POST">
                             @csrf
                             <input type="hidden" name="selected_color" :value="selectedColor">
                             <button class="absolute top-2 right-10 bg-transparent border-none cursor-pointer">
-                                <img src="{{asset('assets/icons/cart_icon.png')}}" alt="cart_icon_auth" class="w-[30px] pt-2 pl-2 hover:w-[35px]">
+                                <img src="{{asset('assets/icons/cart_icon.png')}}" alt="cart_icon_auth_showcat" class="w-[30px] pt-2 pl-2 hover:w-[35px]">
                             </button>
                         </form>
                     @endif
