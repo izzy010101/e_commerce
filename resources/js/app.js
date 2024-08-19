@@ -36,7 +36,8 @@ const app1 = createApp({
             this.selectedColor = color;
             console.log("Selected color:", this.selectedColor);
 
-            const hiddenInput = element.querySelector('input[name="selected_color"]');
+            // Update the hidden input field in the cart form
+            const hiddenInput = document.querySelector('input[name="selected_color"]');
             if (hiddenInput) {
                 hiddenInput.value = color;
             }
@@ -56,6 +57,9 @@ const app1 = createApp({
                 this.wishlistItems = wishlist;
                 localStorage.setItem('wishlist_items', JSON.stringify(wishlist));
 
+                // Update session after adding to the wishlist
+                this.updateCartSession();
+
                 Swal.fire({
                     icon: 'success',
                     title: 'Product added to wishlist!',
@@ -71,6 +75,19 @@ const app1 = createApp({
                     showConfirmButton: false,
                     timer: 2000
                 });
+            }
+        },
+        updateCartSession() {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist_items')) || [];
+            sessionStorage.setItem('cart_item_count', wishlist.length);
+
+            // Update the UI or red dot based on the new cart item count
+            if (wishlist.length > 0) {
+                // Show red dot
+                document.querySelector('#cart-icon').classList.add('has-items');
+            } else {
+                // Hide red dot
+                document.querySelector('#cart-icon').classList.remove('has-items');
             }
         },
         loadWishlist() {
@@ -117,9 +134,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
             },
             methods: {
-                setColor(color) {
+                setColor(color, productId) {
                     this.selectedColor = color;
                     console.log("Selected color:", this.selectedColor);
+
+                    // Update the hidden input field in the cart form using productId
+                    const hiddenInput = document.getElementById(`selectedColor_${productId}`);
+                    if (hiddenInput) {
+                        hiddenInput.value = color;
+                    }
                 },
                 addToWishlist(product) {
                     const activeImageElement = document.querySelector('.product-image.active');

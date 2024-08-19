@@ -34,7 +34,7 @@
                                 @foreach (json_decode($product->colors) as $color)
                                     <div class="w-6 h-6 rounded-full border-gray-500 border-[0.5px] cursor-pointer"
                                          style="background-color: {{ $color }};"
-                                         @click="setColor('{{ $color }}')">
+                                         @click="setColor('{{ $color }}', {{ $product->id }})">
                                     </div>
                                 @endforeach
                             </div>
@@ -58,12 +58,13 @@
                         @if(Auth::check())
                             <form action="{{ route('products.addToCart', $product->id) }}" method="POST" id="add-to-cart-form-{{ $product->id }}">
                                 @csrf
-                                <input type="hidden" name="selected_color" id="selectedColor_{{ $product->id }}">
+                                <input type="hidden" name="selected_color" id="selectedColor_{{ $product->id }}" value="">
                                 <button class="absolute top-2 right-10 bg-transparent border-none cursor-pointer">
                                     <img src="{{asset('assets/icons/cart_icon.png')}}" alt="cart_icon_auth_categblade" class="w-[30px] pt-2 pl-2 hover:w-[35px]">
                                 </button>
                             </form>
                         @endif
+
 
                         <!-- Product Image Gallery -->
                         <div class="relative w-[150px] h-[150px]">

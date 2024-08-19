@@ -14,6 +14,8 @@ class CartController extends Controller
         $userId = auth()->id();
         $cart = Cart::with('items.product')->where('user_id', $userId)->first();
 
+        session(['cart_item_count' => $cart ? $cart->items->count() : 0]);
+
         return view('cart.index', compact('cart'));
     }
 
@@ -22,7 +24,16 @@ class CartController extends Controller
         $item = CartItem::findOrFail($id);
         $item->delete();
 
+        $this->updateCartSession();
+
         return redirect()->route('cart.index')->with('success', 'Item removed from cart');
+    }
+
+    private function updateCartSession()
+    {
+        $userId = auth()->id();
+        $cart = Cart::with('items')->where('user_id', $userId)->first();
+        session(['cart_item_count' => $cart ? $cart->items->count() : 0]);
     }
 
 }

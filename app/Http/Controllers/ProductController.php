@@ -143,8 +143,8 @@ class ProductController extends Controller
     {
         // Find the product by ID
         $product = Product::findOrFail($id);
-        //get the selected color
-        $selectedColor = $request->input('selected_color');
+        $color = $request->input('selected_color');
+
 
         // Get the current user's cart or create a new one
         $cart = Cart::firstOrCreate([
@@ -154,6 +154,7 @@ class ProductController extends Controller
         // Check if the product is already in the cart
         $cartItem = CartItem::where('cart_id', $cart->id)
             ->where('product_id', $product->id)
+            ->where('color', $color)
             ->first();
 
         if ($cartItem) {
@@ -166,7 +167,7 @@ class ProductController extends Controller
                 'cart_id' => $cart->id,
                 'product_id' => $product->id,
                 'quantity' => 1,
-                'color' => $request->input('selected_color'),
+                'color' => $color,
             ]);
         }
          //mozda ovde staj same page ali da oznaci da je uslo u korpu i da izbaci neki sweet alert

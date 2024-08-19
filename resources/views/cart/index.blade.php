@@ -13,29 +13,32 @@
                     @if ($cart && $cart->items->count())
                         <ul>
                             @foreach ($cart->items as $item)
-                              @php( var_dump($item->product->color));
-
                                 <li class="mb-4">
                                     <div class="flex items-center">
+                                        <!-- Display the product image -->
                                         <img src="{{ $item->product->images->first()->path }}" alt="{{ $item->product->name }}" class="w-16 h-16 object-cover rounded">
+
                                         <div class="ml-4">
+                                            <!-- Display product details -->
                                             <h3 class="text-lg font-medium">{{ $item->product->name }}</h3>
                                             <p>Price: ${{ $item->product->price }}</p>
                                             <p>Quantity: {{ $item->quantity }}</p>
-                                            <p>Color: {{ $item->color }}</p>
 
+                                            <!-- Display the selected color -->
+                                            <p>Color: {{ $item->color ?? 'Not specified' }}</p>
 
+                                            <!-- Form to remove the item from the cart -->
                                             <form action="{{ route('cart.remove', $item->id) }}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="text-red-500 hover:text-red-700">Remove</button>
                                             </form>
-
                                         </div>
                                     </div>
                                 </li>
                             @endforeach
                         </ul>
+                        <!-- Display the total cost -->
                         <div class="mt-4">
                             <strong>Total:</strong> ${{ $cart->items->sum(function($item) {
                                 return $item->product->price * $item->quantity;

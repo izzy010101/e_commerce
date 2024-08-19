@@ -8,10 +8,12 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up() : void
     {
-        Schema::create('cartitems', function (Blueprint $table) {
+        Schema::create('cartItems', function (Blueprint $table) {
             $table->id();
             $table->foreignId('cart_id')->constrained('cart')->onDelete('cascade');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
@@ -22,8 +24,10 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down() :void
     {
         Schema::dropIfExists('cartitems');
     }

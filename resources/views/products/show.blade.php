@@ -1,4 +1,5 @@
 <x-app-layout>
+    <!--page product details from search bar -->
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Product Details') }}
@@ -36,14 +37,15 @@
 
                     <!-- Add to cart only if auth -->
                     @if(Auth::check())
-                        <form action="{{ route('products.addToCart', $product->id) }}" method="POST">
+                        <form action="{{ route('products.addToCart', $product->id) }}" method="POST" id="add-to-cart-form-{{ $product->id }}">
                             @csrf
-                            <input type="hidden" name="selected_color" :value="selectedColor">
+                            <input type="hidden" name="selected_color" id="selectedColor_{{ $product->id }}" value="">
                             <button class="absolute top-2 right-10 bg-transparent border-none cursor-pointer">
-                                <img src="{{asset('assets/icons/cart_icon.png')}}" alt="cart_icon_auth_showcat" class="w-[30px] pt-2 pl-2 hover:w-[35px]">
+                                <img src="{{asset('assets/icons/cart_icon.png')}}" alt="cart_icon_auth_categblade" class="w-[30px] pt-2 pl-2 hover:w-[35px]">
                             </button>
                         </form>
                     @endif
+
                 </div>
 
                 <div class="p-6 text-gray-900 dark:text-gray-100">

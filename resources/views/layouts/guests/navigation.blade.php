@@ -27,8 +27,13 @@
 
             @if(Auth::check())
                 <a href="{{ route('cart.index') }}">
-                    <div class="h-[30px] w-[30px]">
+                    <div class="relative h-[30px] w-[30px]">
                         <img src="{{ asset('assets/icons/cart_icon.png') }}" alt="cart_icon">
+
+                        @if(session('cart_item_count') > 0)
+                            <!-- Red dot -->
+                            <span class="absolute top-0 right-0 inline-block w-3 h-3 bg-red-600 rounded-full"></span>
+                        @endif
                     </div>
                 </a>
             @endif
