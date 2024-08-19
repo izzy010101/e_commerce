@@ -1,4 +1,4 @@
-<!-- resources/views/cart/index.blade.php -->
+<!-- views/cart/index.blade.php -->
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -38,12 +38,27 @@
                                 </li>
                             @endforeach
                         </ul>
+
                         <!-- Display the total cost -->
                         <div class="mt-4">
                             <strong>Total:</strong> ${{ $cart->items->sum(function($item) {
                                 return $item->product->price * $item->quantity;
                             }) }}
                         </div>
+
+                        <!-- Proceed to Checkout Button for Logged-in Users -->
+                        @if(Auth::check())
+                            <div class="mt-6">
+                                <a href="{{ route('orders.checkout') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
+                                    Proceed to Checkout
+                                </a>
+                            </div>
+                        @else
+                            <div class="mt-6">
+                                <p class="text-red-500">Please <a href="{{ route('login') }}" class="underline">log in</a> to proceed to checkout.</p>
+                            </div>
+                        @endif
+
                     @else
                         <p>Your cart is empty.</p>
                     @endif
