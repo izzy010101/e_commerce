@@ -10,10 +10,13 @@ use App\Http\Controllers\GuestController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Auth\EmailVerificationPromptController;
+use App\Http\Controllers\Auth\VerifyEmailController;
+//use App\Notifications\EmailVerifiedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Models\Category;
-
 
 // Home page route
 Route::get('/', [GuestController::class, 'home']);
@@ -35,11 +38,6 @@ Route::get('/category/{id}', [GuestController::class, 'showCategory'])->name('gu
 
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
 
-
-// Dashboard route, protected by 'auth' and 'verified' middleware
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 // Group routes that require authentication
 Route::middleware('auth')->group(function () {
@@ -80,21 +78,28 @@ Route::post('register', [RegisteredUserController::class, 'store']);
 require __DIR__.'/auth.php';
 
 // Email verification routes
-//Route::get('/email/verify', function () {
-//    return view('auth.verify-email');
-//})->middleware('auth')->name('verification.notice');
-//
-//Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-//    $request->fulfill();
-//
-//    return redirect('/dashboard');
-//})->middleware(['auth', 'signed'])->name('verification.verify');
-//
-//Route::post('/email/verification-notification', function (Request $request) {
-//    $request->user()->sendEmailVerificationNotification();
-//
-//    return back()->with('message', 'Verification link sent!');
-//})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+Route::get('/email/verify', [EmailVerificationPromptController::class, '__invoke'])
+    ->middleware('auth')
+    ->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    // Use fully qualified name to avoid conflicts
+    $request->user()->notify(new \App\Notifications\EmailVerifiedNotification());
+
+    return redirect('/dashboard')->with('success', 'Your email has been successfully verified!');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+
+Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+    ->middleware(['auth', 'throttle:6,1'])
+    ->name('verification.send');
+
+// Dashboard route, protected by 'auth' and 'verified' middleware
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 
 
