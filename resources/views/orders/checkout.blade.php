@@ -29,7 +29,7 @@
                     <!-- Place Order Button -->
                     <form action="{{ route('orders.store') }}" method="POST">
                         @csrf
-                        <button type="submit" class="mt-4 btn btn-primary">Place Order</button>
+                        <button type="submit" class="mt-4 bg-[#C5B358] text-white p-2 rounded hover:bg-[#b8a93e]">Place Order</button>
                     </form>
                 </div>
             </div>

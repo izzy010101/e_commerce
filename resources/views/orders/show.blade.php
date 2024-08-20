@@ -7,7 +7,7 @@
 
     </x-slot>
     @if (session('success'))
-        <div class="bg-green-500 text-white p-4 rounded-lg mb-6">
+        <div class="bg-green-400 text-white p-4 rounded-lg mb-6">
             {{ session('success') }}
         </div>
     @endif

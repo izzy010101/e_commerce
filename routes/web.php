@@ -40,7 +40,7 @@ Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
 
 
 // Group routes that require authentication
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', 'verified')->group(function () {
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
