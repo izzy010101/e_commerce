@@ -63,7 +63,7 @@
 
         <div class="flex items-center gap-4">
             <x-primary-button
-                class="bg-primary hover:bg-primaryHover"
+                class="bg-primary hover:bg-primaryHover active:bg-primary focus:bg-primaryHover"
             >
                 {{ __('Save') }}
             </x-primary-button>
