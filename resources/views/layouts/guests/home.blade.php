@@ -12,7 +12,7 @@
         </div>
 
     </div>
-    
+
 
     {{--    middle part of the page--}}
 
@@ -35,7 +35,6 @@
     {{--    videos part of the page--}}
     <h1 class="font-thin lg:text-6xl text-5xl p-8 text-center mt-6 mb-6">Ziara Services</h1>
 
-    <!-- videos -->
     <!-- videos -->
     <div class="flex flex-col items-center lg:flex-row lg:justify-center text-center lg:gap-10 lg:pb-8">
 
