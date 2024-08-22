@@ -25,6 +25,7 @@ Route::get('/', [GuestController::class, 'home']);
 Route::get('/personalization', [GuestController::class, 'personalization'])->name('personalization');
 Route::get('/customorder', [GuestController::class, 'customorder'])->name('customorder');
 Route::get('/moderndesign', [GuestController::class, 'moderndesign'])->name('moderndesign');
+Route::get('/mencampaign', [GuestController::class, 'mencampaign'])->name('mencampaign');
 
 //search bar at navigation all website
 Route::get('/search-products', [ProductController::class, 'search'])->name('products.search');

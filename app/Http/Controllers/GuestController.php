@@ -36,5 +36,8 @@ class GuestController extends Controller
         return view('layouts.guests.moderndesign');
     }
 
+    public function mencampaign() {
+        return view('layouts.guests.mencampaign');
+    }
 
 }

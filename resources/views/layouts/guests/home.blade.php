@@ -21,7 +21,7 @@
         <div class="w-full lg:w-1/2 h-screen px-6 py-20 text-center text-surface flex flex-col justify-center items-center dark:bg-neutral-700 dark:text-white">
             <h1 class="mb-6 text-4xl font-thin">Introducing The Men 2024 Campaign</h1>
             <p class="mb-8 text-md w-full lg:w-1/2">Spotlighting individuality in Ziara Colluci’s new men’s campaign for the House.</p>
-            <a class="inline-block py-3 px-2 text-lg font-medium uppercase leading-normal text-black font-semibold underline" href="#" role="button">Discover More</a>
+            <a class="inline-block py-3 px-2 text-lg font-medium uppercase leading-normal text-black font-semibold underline" href="{{ route('mencampaign') }}" role="button">Discover More</a>
         </div>
 
         <div class="w-full lg:w-1/2 bg-cover bg-no-repeat bg-center h-screen"
