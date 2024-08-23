@@ -1,3 +1,4 @@
+<!-- views/layouts/quests/mencampaign.blade.php -->
 <x-guest-layout>
     <div class="flex flex-col items-center p-6 md:p-12 text-center justify-center text-gray-800">
         <h1 class="uppercase font-bold text-3xl md:text-5xl tracking-wide">Men's Campaign</h1>

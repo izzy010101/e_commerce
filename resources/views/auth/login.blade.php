@@ -1,5 +1,5 @@
+<!-- views/auth/login.blade.php -->
 <x-guest-layout>
-
     <div class="flex flex-col lg:flex-row gap-4 px-6 pt-6">
         <div class="lg:w-1/2">
             <h3 class="text-2xl font-thin lg:pl-6">Welcome Back</h3>
@@ -7,6 +7,9 @@
 
             <form method="POST" action="{{ route('login') }}" class="w-full p-0 lg:p-6">
                 @csrf
+
+                <!-- Session Status -->
+                <x-auth-session-status class="mb-4" :status="session('status')" />
 
                 <!-- Email Address -->
                 <div class="mt-4 lg:mt-0">
@@ -58,9 +61,6 @@
                     <p>Don't have a Ziara account?</p>
                     <a href="/register" class="underline">Create yours now</a>
                 </div>
-
-                <!-- Session Status -->
-                <x-auth-session-status class="mb-4" :status="session('status')" />
             </form>
         </div>
 

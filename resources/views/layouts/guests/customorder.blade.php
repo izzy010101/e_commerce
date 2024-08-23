@@ -1,3 +1,4 @@
+<!-- views/layouts/quests/customorder.blade.php -->
 <x-guest-layout>
     <div class="flex flex-col items-center p-6 md:p-12 text-center justify-center text-gray-600">
         <h1 class="uppercase font-thin text-3xl md:text-4xl">Custom Measurements</h1>

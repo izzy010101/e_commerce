@@ -49,7 +49,7 @@
                         <!-- Proceed to Checkout Button for Logged-in Users -->
                         @if(Auth::check())
                             <div class="mt-6">
-                                <a href="{{ route('orders.checkout') }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
+                                <a href="{{ route('orders.checkout') }}" class="bg-primary text-white px-4 py-2 rounded hover:bg-primaryHover">
                                     Proceed to Checkout
                                 </a>
                             </div>

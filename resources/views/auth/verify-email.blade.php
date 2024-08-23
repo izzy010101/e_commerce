@@ -1,3 +1,4 @@
+<!-- views/auth/verify-email.blade.php -->
 <x-guest-layout>
     <div class="flex flex-col items-center">
         <div class="w-1/2  text-center m-4 text-md text-gray-600 dark:text-gray-400">

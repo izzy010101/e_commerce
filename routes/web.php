@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -46,6 +47,8 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    //Account route for logged in user from dashboard
+    Route::get('/account', [AccountController::class, 'index'])->name('account.index');
 
     // Admin-specific routes
     Route::middleware('role:admin')->group(function () {

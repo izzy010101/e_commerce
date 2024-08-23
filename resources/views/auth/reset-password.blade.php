@@ -1,3 +1,4 @@
+<!-- views/auth/reset-paswword.blade.php -->
 <x-guest-layout>
     <form method="POST" action="{{ route('password.store') }}">
         @csrf

@@ -1,3 +1,4 @@
+<!-- views/products/show.blade.php -->
 <x-app-layout>
     <!--page product details from search bar -->
     <x-slot name="header">

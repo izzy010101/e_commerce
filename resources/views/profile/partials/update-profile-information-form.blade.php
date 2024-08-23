@@ -24,7 +24,7 @@
                 id="name"
                 name="name"
                 type="text"
-                class="mt-1 block w-full border-primary focus:border-primary focus:ring-primary focus:ring-2 focus:outline-none dark:border-gray-700 dark:focus:border-primary"
+                class="mt-1 block w-full border-primary focus:border-primary focus:ring-primary focus:shadow-primary  focus:ring-2 focus:outline-none dark:border-gray-700 dark:focus:border-primary"
                 :value="old('name', $user->name)"
                 required autofocus
                 autocomplete="name" />

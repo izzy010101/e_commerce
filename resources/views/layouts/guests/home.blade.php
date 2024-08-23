@@ -1,3 +1,4 @@
+<!-- views/layouts/quests/home.blade.php -->
 <x-guest-layout>
     <div class="flex flex-col lg:flex-row">
 

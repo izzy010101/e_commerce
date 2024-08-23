@@ -1,5 +1,5 @@
+<!-- views/auth/register.blade.php -->
 <x-guest-layout>
-
     <div class="flex flex-col gap-4 p-6">
         <h3 class="text-2xl font-thin">Create Your Account</h3>
         <p class="text-xs">Create your account to have access to a more personalized experience.</p>
