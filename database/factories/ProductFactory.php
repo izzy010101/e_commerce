@@ -27,7 +27,26 @@ class ProductFactory extends Factory
             'colors' => json_encode($this->faker->randomElements([
                 'Red', 'Blue', 'Green', 'Yellow', 'Black', 'White', 'Purple'
             ], $this->faker->numberBetween(1, 5))),
-            // 'category_id' => Category::inRandomOrder()->first()->id, // Remove this line
+            'images_urls' => json_encode($this->generatePicsumUrls()),
         ];
+    }
+
+    /**
+     * Generate an array of Picsum image URLs.
+     *
+     * @return array<string>
+     */
+    protected function generatePicsumUrls(): array
+    {
+        $numImages = $this->faker->numberBetween(1, 4); // Random number of images
+        $urls = [];
+
+        for ($i = 0; $i < $numImages; $i++) {
+            $width = $this->faker->numberBetween(300, 800);
+            $height = $this->faker->numberBetween(300, 800);
+            $urls[] = "https://picsum.photos/{$width}/{$height}?random=" . $this->faker->numberBetween(1, 10000);
+        }
+
+        return $urls;
     }
 }

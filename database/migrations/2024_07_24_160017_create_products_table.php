@@ -18,7 +18,9 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->integer('stock');
             $table->json('colors');
+            $table->json('images_urls')->nullable();
             $table->timestamps();
+
 
 
         });
