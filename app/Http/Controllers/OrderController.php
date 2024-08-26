@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    public function checkout()
+        public function checkout_laravel()
     {
         $userId = auth()->id();
         $cart = Cart::with('items.product')->where('user_id', $userId)->first();
@@ -22,7 +22,7 @@ class OrderController extends Controller
         return view('orders.checkout', compact('cart'));
     }
 
-    public function store(Request $request)
+    public function store_laravel(Request $request)
     {
 //        dd('Store method hit');
         try {
@@ -44,7 +44,6 @@ class OrderController extends Controller
                 'status' => 'Pending',
             ]);
 
-//            dd('order created',$order);
             // Create Order Items
             foreach ($cart->items as $cartItem) {
                 OrderItem::create([
@@ -68,6 +67,47 @@ class OrderController extends Controller
             DB::rollBack();
             \Log::error('Order placement failed: ' . $e->getMessage());
             return redirect()->route('orders.checkout')->with('error', 'Failed to place order. Please try again.');
+        }
+    }
+
+
+
+
+
+
+    //react project
+    public function checkout()
+    {
+        $userId = auth()->id();
+        return view('orders.checkout', compact('cart'));
+    }
+
+
+    public function store(Request $request)
+    {
+        $userId = auth()->id();
+
+        if (!$userId) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $order = Order::create([
+                'user_id' => $userId,
+                'total_price' => $request->input('total_price'),
+                'status' => 'Pending',
+                'discount' => 0,
+            ]);
+
+            DB::commit();
+            return response()->json(['message' => 'Order placed successfully!', 'orderId' => $order->id], 201);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Order placement failed: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to place order. Please try again.'], 500);
         }
     }
 

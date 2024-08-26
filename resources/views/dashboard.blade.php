@@ -33,27 +33,25 @@
                     </div>
                 @endif
 
-                <!-- Recent Orders or Activities -->
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 dark:text-gray-100">
-                        <h3 class="text-lg font-semibold mb-4">Recent Orders</h3>
-                        <ul class="space-y-2">
-                            <!-- Example static items, replace with dynamic data -->
-                            <li class="flex justify-between">
-                                <span>Order #12345</span>
-                                <span class="text-sm text-gray-500">2 days ago</span>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>Order #12346</span>
-                                <span class="text-sm text-gray-500">1 week ago</span>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>Order #12347</span>
-                                <span class="text-sm text-gray-500">2 weeks ago</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+{{--                <!-- Recent Orders or Activities -->--}}
+{{--                  <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">--}}
+{{--                    <div class="p-6 text-gray-900 dark:text-gray-100">--}}
+{{--                        <h3 class="text-lg font-semibold mb-4">Recent Orders</h3>--}}
+
+{{--                        @if($orders->isEmpty())--}}
+{{--                            <p>You have no recent orders.</p>--}}
+{{--                        @else--}}
+{{--                            <ul class="space-y-2">--}}
+{{--                                @foreach($orders as $order)--}}
+{{--                                    <li class="flex justify-between">--}}
+{{--                                        <span>Order #{{ $order->id }}</span>--}}
+{{--                                        <span class="text-sm text-gray-500">{{ $order->created_at->diffForHumans() }}</span>--}}
+{{--                                    </li>--}}
+{{--                                @endforeach--}}
+{{--                            </ul>--}}
+{{--                        @endif--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
                 <!-- Quick Actions -->
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg col-span-1 md:col-span-2">

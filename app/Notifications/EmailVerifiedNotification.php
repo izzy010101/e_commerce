@@ -24,3 +24,4 @@ class EmailVerifiedNotification extends Notification
             ->line('Thank you for verifying your email. You can now access all features of your account.');
     }
 }
+

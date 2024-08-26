@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\CrosMiddleware;
 use App\Http\Middleware\RoleMiddleware;
 use App\View\Components\GuestLayout;
 use Illuminate\Routing\Router;
@@ -30,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Register the role middleware here in provider
         $router->aliasMiddleware('role', RoleMiddleware::class);
+
         //guest layout
 
         Blade::component('guest-layout', GuestLayout::class);

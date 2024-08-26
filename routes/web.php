@@ -60,14 +60,14 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+//    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
     Route::post('/products/{id}/add-to-cart', [ProductController::class, 'addToCart'])->name('products.addToCart');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::delete('/cart/remove/{id}', [CartController::class, 'removeItem'])->name('cart.remove');
 
     //orders routes
-    Route::get('/checkout', [OrderController::class, 'checkout'])->name('orders.checkout');
-    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('/checkout_laravel', [OrderController::class, 'checkout_laravel'])->name('orders.checkout');
+    Route::post('/orders_laravel', [OrderController::class, 'store_laravel'])->name('orders.store');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 
@@ -104,7 +104,6 @@ Route::post('/email/verification-notification', [EmailVerificationNotificationCo
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
 
 
 
