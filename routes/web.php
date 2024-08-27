@@ -45,8 +45,9 @@ Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist');
 Route::middleware('auth', 'verified')->group(function () {
     // Profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/profile', [ProfileController::class, 'update_laravel'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
     //Account route for logged in user from dashboard
     Route::get('/account', [AccountController::class, 'index'])->name('account.index');
 
@@ -60,7 +61,6 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-//    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
     Route::post('/products/{id}/add-to-cart', [ProductController::class, 'addToCart'])->name('products.addToCart');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::delete('/cart/remove/{id}', [CartController::class, 'removeItem'])->name('cart.remove');
@@ -88,8 +88,7 @@ Route::get('/email/verify', [EmailVerificationPromptController::class, '__invoke
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
-
-    // Use fully qualified name to avoid conflicts
+    //negde saljem dve notifikacije bozeeeee uzmi me
     $request->user()->notify(new \App\Notifications\EmailVerifiedNotification());
 
     return redirect('/dashboard')->with('success', 'Your email has been successfully verified!');

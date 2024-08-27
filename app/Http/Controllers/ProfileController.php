@@ -24,7 +24,7 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update_laravel(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
 
@@ -35,6 +35,24 @@ class ProfileController extends Controller
         $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
+
+    /**
+     * Update the user's profile information for react project.
+     */
+    public function update(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $request->user()->id,
+        ]);
+
+        $user = $request->user();
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->save();
+
+        return response()->json(['user' => $user, 'message' => 'Profile updated successfully.']);
     }
 
     /**
