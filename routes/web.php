@@ -14,7 +14,6 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\VerifyEmailController;
-//use App\Notifications\EmailVerifiedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Models\Category;
@@ -80,6 +79,7 @@ Route::post('register', [RegisteredUserController::class, 'store']);
 
 // Include authentication routes
 require __DIR__.'/auth.php';
+
 
 // Email verification routes
 Route::get('/email/verify', [EmailVerificationPromptController::class, '__invoke'])

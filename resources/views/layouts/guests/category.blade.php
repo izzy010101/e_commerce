@@ -1,9 +1,8 @@
 <x-guest-layout>
     <div class="container mx-auto p-4">
-        <h1 class="text-2xl font-bold mb-4">{{ $category->name }}</h1>
-
-        <h2 class="text-xl font-bold mt-4">Products:</h2>
-
+        <div class="bg-[#C5B358] mt-1 ml-4 mr-4 mb-10 sm:mt-0 sm:ml-0 sm:mr-0 sm:mb-1 !mb-8 rounded-lg p-6 shadow-lg flex items-center justify-center">
+            <h1 class="text-4xl font-extrabold text-white tracking-wide text-center">{{ $category->name }}</h1>
+        </div>
 
         <!-- Grid Layout for Product Cards -->
         <div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">

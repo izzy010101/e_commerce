@@ -28,6 +28,7 @@ Route::middleware([CrosMiddleware::class])->group(function () {
         Route::put('/password/update', [PasswordController::class, 'update']);
         Route::put('/profile/update', [ProfileController::class, 'update']);
         Route::delete('/profile/delete', [ProfileController::class, 'destroy']);
+        Route::delete('/profile/delete_user', [ProfileController::class, 'delete_user']);
         Route::post('/orders', [OrderController::class, 'store']);
 
     });

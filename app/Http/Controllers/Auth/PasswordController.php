@@ -11,7 +11,7 @@ use Illuminate\Validation\Rules\Password;
 class PasswordController extends Controller
 {
     /**
-     * Update the user's password.
+     * Update the user's password react.
      */
     public function update(Request $request)
     {
@@ -31,5 +31,22 @@ class PasswordController extends Controller
         ]);
 
         return response()->json(['message' => 'Password updated successfully.']);
+    }
+
+    /**
+     * Update the user's password laravel.
+     */
+    public function update_laravel(Request $request): RedirectResponse
+    {
+        $validated = $request->validateWithBag('updatePassword', [
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', Password::defaults(), 'confirmed'],
+        ]);
+
+        $request->user()->update([
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return back()->with('status', 'password-updated');
     }
 }

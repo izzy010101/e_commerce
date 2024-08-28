@@ -64,8 +64,8 @@
 
         <div class="flex items-center gap-4">
             <x-primary-button
-                class="bg-primary hover:bg-primaryHover active:bg-primary focus:bg-primaryHover"
-            >
+                class="inline-flex items-center px-4 py-2  dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest dark:hover:bg-white focus:outline-none focus:ring-2  focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 bg-primary hover:bg-primaryHover focus:bg-primaryHover active:bg-primary focus:ring-primaryHover">
+
                 {{ __('Save') }}
             </x-primary-button>
 
@@ -75,7 +75,7 @@
                     x-show="show"
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600 dark:text-gray-400"
+                    class="text-sm text-green-600 dark:text-gray-400"
                 >{{ __('Saved.') }}</p>
             @endif
         </div>

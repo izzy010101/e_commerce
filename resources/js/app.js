@@ -46,7 +46,7 @@ const app1 = createApp({
             const activeImageElement = document.querySelector('.product-image.active');
             const activeImagePath = activeImageElement ? activeImageElement.getAttribute('data-path') : '';
 
-            product.selectedColor = this.selectedColor; // Use the selected color from this instance
+            product.selectedColor = this.selectedColor || (product.colors.length > 0 ? product.colors[0] : '');
             product.image = activeImagePath;
 
             let wishlist = this.wishlistItems;
@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const activeImageElement = document.querySelector('.product-image.active');
                     const activeImagePath = activeImageElement ? activeImageElement.getAttribute('data-path') : '';
 
-                    product.selectedColor = this.selectedColor; // Use the selected color from this instance
+                    product.selectedColor = this.selectedColor || (product.colors.length > 0 ? product.colors[0] : '');
                     product.image = activeImagePath;
 
                     let wishlist = JSON.parse(localStorage.getItem('wishlist_items')) || [];
@@ -181,4 +181,13 @@ document.addEventListener('DOMContentLoaded', () => {
         appInstance.mount(`#${element.id}`);
     });
 
+    // Handle local storage clearing on logout
+    const logoutLink = document.getElementById('logout-link');
+
+    if (logoutLink) {
+        logoutLink.addEventListener('click', () => {
+            // Clear local storage key 'wishlist_items'
+            localStorage.removeItem('wishlist_items');
+        });
+    }
 });

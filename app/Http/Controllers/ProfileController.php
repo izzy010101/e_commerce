@@ -6,6 +6,7 @@ use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -56,7 +57,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Delete the user's account.
+     * Delete the user's account laravel.
      */
     public function destroy(Request $request): RedirectResponse
     {
@@ -76,5 +77,34 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    /**
+     * Delete the user's account react.
+     */
+    public function delete_user(Request $request): \Illuminate\Http\JsonResponse
+    {
+        \Log::info('Session: ', $request->session()->all());
+        $request->validate([
+            'password' => ['required', 'current_password'],
+        ]);
+
+        $user = $request->user();
+        DB::transaction(function () use ($user) {
+            // Optionally, delete related orders if needed
+            $user->orders()->delete();
+
+            // Delete the user
+            $user->delete();
+        });
+
+        $request->user()->currentAccessToken()->delete();
+
+        $user->delete();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return response()->json(['message' => 'Account deleted successfully.']);
     }
 }
