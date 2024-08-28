@@ -84,27 +84,14 @@ class ProfileController extends Controller
      */
     public function delete_user(Request $request): \Illuminate\Http\JsonResponse
     {
-        \Log::info('Session: ', $request->session()->all());
-        $request->validate([
-            'password' => ['required', 'current_password'],
-        ]);
-
-        $user = $request->user();
-        DB::transaction(function () use ($user) {
-            // Optionally, delete related orders if needed
-            $user->orders()->delete();
-
-            // Delete the user
+        try {
+            $user = $request->user();
+            
             $user->delete();
-        });
 
-        $request->user()->currentAccessToken()->delete();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return response()->json(['message' => 'Account deleted successfully.']);
+            return response()->json(['message' => 'User deleted successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to delete user.'], 500);
+        }
     }
 }

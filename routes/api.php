@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
@@ -7,7 +8,6 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OrderController;
 use App\Http\Middleware\CrosMiddleware;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
@@ -27,8 +27,8 @@ Route::middleware([CrosMiddleware::class])->group(function () {
         });
         Route::put('/password/update', [PasswordController::class, 'update']);
         Route::put('/profile/update', [ProfileController::class, 'update']);
+        Route::middleware('auth:sanctum')->delete('/profile/delete_user', [ProfileController::class, 'delete_user']);
         Route::delete('/profile/delete', [ProfileController::class, 'destroy']);
-        Route::delete('/profile/delete_user', [ProfileController::class, 'delete_user']);
         Route::post('/orders', [OrderController::class, 'store']);
 
     });
