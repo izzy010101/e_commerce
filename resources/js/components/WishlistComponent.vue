@@ -11,7 +11,7 @@
             />
             <div class="flex-1">
                 <p class="font-semibold">{{ item.name }}</p>
-                <p class="text-sm text-gray-500">Color: {{ item.color }}</p>
+                <p class="text-sm text-gray-500">Color: {{ capitalizeFirstLetter(item.selectedColor || item.color) }}</p>
                 <p v-if="isLoggedIn && !isAdmin" class="text-sm text-gray-500">Price: ${{ item.price }}</p>
             </div>
             <!-- Wrapper around the button with ml-auto to move it to the right -->
@@ -46,6 +46,10 @@ export default {
         }
     },
     methods: {
+        capitalizeFirstLetter(string) {
+            if (!string) return string;
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        },
         removeFromWishlist(productId) {
             this.wishlistItems = this.wishlistItems.filter(item => item.id !== productId);
             localStorage.setItem('wishlist_items', JSON.stringify(this.wishlistItems));

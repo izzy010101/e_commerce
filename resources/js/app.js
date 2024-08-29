@@ -46,7 +46,24 @@ const app1 = createApp({
             const activeImageElement = document.querySelector('.product-image.active');
             const activeImagePath = activeImageElement ? activeImageElement.getAttribute('data-path') : '';
 
-            product.selectedColor = this.selectedColor || (product.colors.length > 0 ? product.colors[0] : '');
+            console.log(product.selectedColor);
+            if(product.selectedColor === 'undefined'){
+                product.selectedColor = document.querySelector('#colors_circles_container').firstChild;
+
+                // Check if the first child exists and retrieve its background color
+                if (firstChild) {
+                    const firstChildBackgroundColor = window.getComputedStyle(firstChild).backgroundColor;
+                    console.log('First child background color:', firstChildBackgroundColor);
+
+                    // Assign the background color to product.selectedColor
+                    product.selectedColor = firstChildBackgroundColor;
+                } else {
+                    console.log('No child elements found in the container.');
+                }
+            }
+            product.selectedColor = this.selectedColor;
+
+
             product.image = activeImagePath;
 
             let wishlist = this.wishlistItems;
@@ -148,7 +165,41 @@ document.addEventListener('DOMContentLoaded', () => {
                     const activeImageElement = document.querySelector('.product-image.active');
                     const activeImagePath = activeImageElement ? activeImageElement.getAttribute('data-path') : '';
 
-                    product.selectedColor = this.selectedColor || (product.colors.length > 0 ? product.colors[0] : '');
+                        // Use selected color or fallback to the first child's background color name
+                        if (!this.selectedColor) {
+                            // Query the specific container for the current product by matching product ID
+                            const container = document.querySelector(`#colors_circles_container-${product.id}`);
+
+                            if (container) {
+                                const firstChild = container.firstElementChild;
+
+                                // Check if the first child exists
+                                if (firstChild) {
+                                    // Directly access the color name from the inline style attribute
+                                    const firstChildBackgroundColor = firstChild.style.backgroundColor;
+
+                                    // Ensure the color name is retrieved and used; fallback to first computed color if needed
+                                    if (firstChildBackgroundColor) {
+                                        console.log(`First child color name:`, firstChildBackgroundColor);
+                                        this.selectedColor = firstChildBackgroundColor;
+                                    } else {
+                                        // Retrieve the computed style if the inline style is not set
+                                        const computedColor = window.getComputedStyle(firstChild).backgroundColor;
+                                        console.log(`Computed color:`, computedColor);
+                                        this.selectedColor = computedColor;
+                                    }
+                                } else {
+                                    console.log(`Container has no child elements.`);
+                                }
+                            } else {
+                                console.log(`No container found for product ID: ${product.id}`);
+                            }
+                        }
+
+
+                        product.selectedColor = this.selectedColor; // Use the selected or default color
+
+
                     product.image = activeImagePath;
 
                     let wishlist = JSON.parse(localStorage.getItem('wishlist_items')) || [];

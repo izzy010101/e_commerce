@@ -5,6 +5,7 @@
             <h2 class="text-4xl font-extrabold text-gray-800 text-white tracking-wide text-center">Wishlist</h2>
         </div>
 
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
             <div id="app1">
                 <wishlist-component v-if="wishlistItems.length" :wishlist-items="wishlistItems"></wishlist-component>
 
@@ -12,6 +13,7 @@
                     <p>No items in your wishlist.</p>
                 </template>
             </div>
+        </div>
     </div>
 
 </x-app-layout>
