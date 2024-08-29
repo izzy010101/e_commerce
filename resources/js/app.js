@@ -76,14 +76,12 @@ const app1 = createApp({
                 wishlist.push(product);
                 localStorage.setItem('wishlist_items', JSON.stringify(wishlist));
 
-                // Display Swal notification and handle page reload based on user status
                 Swal.fire({
                     icon: 'success',
                     title: `Product added to wishlist with color ${this.selectedColor}!`,
                     showConfirmButton: false,
                     timer: 2000
                 }).then(() => {
-                    // Check if the user is logged in by looking for the meta tag
                     const userMeta = document.querySelector('meta[name="user"]');
                     if (userMeta) {
                         // User is logged in, update cart session and reload
