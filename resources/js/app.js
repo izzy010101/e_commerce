@@ -50,7 +50,7 @@ const app1 = createApp({
             product.image = activeImagePath;
 
             let wishlist = this.wishlistItems;
-            const exists = wishlist.find(item => item.id === product.id && item.color === product.color);
+            const exists = wishlist.find(item => item.id === product.id && item.color === product.selectedColor);
 
             if (!exists) {
                 wishlist.push(product);

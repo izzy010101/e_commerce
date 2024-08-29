@@ -86,7 +86,7 @@ class ProfileController extends Controller
     {
         try {
             $user = $request->user();
-            
+
             $user->delete();
 
             return response()->json(['message' => 'User deleted successfully.']);

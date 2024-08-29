@@ -5,7 +5,7 @@
         </div>
 
         <!-- Grid Layout for Product Cards -->
-        <div class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             @foreach ($products as $product)
                 <div class="border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 bg-white dark:bg-gray-800 relative">
                     <figure class="flex flex-col items-center justify-center p-8 text-center bg-white dark:bg-gray-800 dark:border-gray-700 relative">

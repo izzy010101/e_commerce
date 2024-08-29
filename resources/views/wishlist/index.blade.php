@@ -1,23 +1,17 @@
 <!-- views/wishlist/index.blade.php -->
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Wishlist') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div id="app1" class="p-6 text-gray-900 dark:text-gray-100">
-                    <!-- Use Vue.js to display the wishlist items or an empty message -->
-                    <wishlist-component v-if="wishlistItems.length" :wishlist-items="wishlistItems"></wishlist-component>
-
-                    <template v-else>
-                        <p>Your wishlist is empty.</p>
-                    </template>
-                </div>
-            </div>
+    <div class="container mx-auto p-12">
+        <div class="bg-[#C5B358] mt-1 ml-4 mr-4 mb-10 sm:mt-0 sm:ml-0 sm:mr-0 sm:mb-1 !mb-8 rounded-lg p-6 shadow-lg flex items-center justify-center">
+            <h2 class="text-4xl font-extrabold text-gray-800 text-white tracking-wide text-center">Wishlist</h2>
         </div>
+
+            <div id="app1">
+                <wishlist-component v-if="wishlistItems.length" :wishlist-items="wishlistItems"></wishlist-component>
+
+                <template v-else>
+                    <p>No items in your wishlist.</p>
+                </template>
+            </div>
     </div>
+
 </x-app-layout>
