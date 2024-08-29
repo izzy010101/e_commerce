@@ -22,7 +22,7 @@
         </div>
 
         <ul v-if="limitedResults.length && !errorOccurred"
-            class="absolute left-0 w-full max-w-full bg-white border border-gray-300 rounded-lg mt-1 max-h-60 overflow-y-auto z-30"
+            class="absolute left-0 w-full max-w-full bg-white border border-gray-300 rounded-lg mt-1 max-h-60 overflow-y-auto z-50"
         >
             <li
                 v-for="result in limitedResults"

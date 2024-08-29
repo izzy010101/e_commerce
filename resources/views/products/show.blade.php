@@ -77,6 +77,8 @@
                                  loading="lazy"
                                  onerror="this.onerror=null;this.src='{{ asset('assets/images/placeholder.png') }}';">
                         @endforeach
+
+
                         <!-- Left and Right Navigation Buttons -->
                         <button class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-300 text-black p-2 rounded focus:outline-none" onclick="prevImage(this)">&#10094;</button>
                         <button class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-300 text-black p-2 rounded focus:outline-none" onclick="nextImage(this)">&#10095;</button>
