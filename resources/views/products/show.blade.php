@@ -13,12 +13,12 @@
                 <!-- Cart and Wishlist -->
                 <div class="flex flex-col pl-6 pt-6 text-center pr-4 bg-white dark:bg-gray-800 dark:border-gray-700 relative">
                     <div id="app1">
-                        <div class="flex w-full space-x-2 mt-2 mb-2">
+                        <div class="flex w-full space-x-2 mt-2 mb-2" id="product_details_color-{{ $product->id }}">
                             <span>Colors:</span>
                             @foreach (json_decode($product->colors) as $color)
                                 <div class="w-6 h-6 rounded-full border-gray-500 border-[0.5px] cursor-pointer"
                                      style="background-color: {{ $color }};"
-                                     @click="setColor('{{ $color }}')">
+                                     @click="setColor('{{ $color }}', {{ $product->id }})">
                                 </div>
                             @endforeach
                         </div>

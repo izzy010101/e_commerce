@@ -46,44 +46,54 @@ const app1 = createApp({
             const activeImageElement = document.querySelector('.product-image.active');
             const activeImagePath = activeImageElement ? activeImageElement.getAttribute('data-path') : '';
 
-            console.log(product.selectedColor);
-            if(product.selectedColor === 'undefined'){
-                product.selectedColor = document.querySelector('#colors_circles_container').firstChild;
 
-                // Check if the first child exists and retrieve its background color
-                if (firstChild) {
-                    const firstChildBackgroundColor = window.getComputedStyle(firstChild).backgroundColor;
-                    console.log('First child background color:', firstChildBackgroundColor);
+            // Use selected color or fallback to the first child's background color
+            if (!this.selectedColor) {
+                console.log('usla si');
+                // Find the specific container for the current product by matching the product ID
+                const container = document.querySelector(`#product_details_color-${product.id}`);
 
-                    // Assign the background color to product.selectedColor
-                    product.selectedColor = firstChildBackgroundColor;
-                } else {
-                    console.log('No child elements found in the container.');
+                if (container) {
+                    const firstChild = container.querySelector('div');
+
+                    // Check if the first child exists and retrieve its background color
+                    if (firstChild) {
+                        const firstChildBackgroundColor = firstChild.style.backgroundColor || window.getComputedStyle(firstChild).backgroundColor;
+                        console.log('First child background color:', firstChildBackgroundColor);
+
+                        this.selectedColor = firstChildBackgroundColor || 'No Color'; // Fallback to a default if not found
+                    }
                 }
             }
-            product.selectedColor = this.selectedColor;
 
-
+            product.selectedColor = this.selectedColor || 'default color';
             product.image = activeImagePath;
 
-            let wishlist = this.wishlistItems;
-            const exists = wishlist.find(item => item.id === product.id && item.color === product.selectedColor);
+            let wishlist = JSON.parse(localStorage.getItem('wishlist_items')) || [];
+            const exists = wishlist.find(item => item.id === product.id && item.selectedColor && product.selectedColor && item.selectedColor === product.selectedColor);
 
             if (!exists) {
                 wishlist.push(product);
-                this.wishlistItems = wishlist;
                 localStorage.setItem('wishlist_items', JSON.stringify(wishlist));
 
-                // Update session after adding to the wishlist
-                this.updateCartSession();
-
+                // Display Swal notification and handle page reload based on user status
                 Swal.fire({
                     icon: 'success',
-                    title: 'Product added to wishlist!',
+                    title: `Product added to wishlist with color ${this.selectedColor}!`,
                     showConfirmButton: false,
                     timer: 2000
                 }).then(() => {
-                    location.reload();
+                    // Check if the user is logged in by looking for the meta tag
+                    const userMeta = document.querySelector('meta[name="user"]');
+                    if (userMeta) {
+                        // User is logged in, update cart session and reload
+                        this.updateCartSession();
+                        location.reload();
+                    } else {
+                        location.reload();
+                        // User is not logged in, just log the action without reload
+                        console.log('Wishlist updated without page reload for guests.');
+                    }
                 });
             } else {
                 Swal.fire({
@@ -98,13 +108,15 @@ const app1 = createApp({
             const wishlist = JSON.parse(localStorage.getItem('wishlist_items')) || [];
             sessionStorage.setItem('cart_item_count', wishlist.length);
 
-            // Update the UI or red dot based on the new cart item count
-            if (wishlist.length > 0) {
-                // Show red dot
-                document.querySelector('#cart-icon').classList.add('has-items');
+            const cartIcon = document.querySelector('#cart-icon');
+            if (cartIcon) {
+                if (wishlist.length > 0) {
+                    cartIcon.classList.add('has-items');
+                } else {
+                    cartIcon.classList.remove('has-items');
+                }
             } else {
-                // Hide red dot
-                document.querySelector('#cart-icon').classList.remove('has-items');
+                console.log('Cart icon not found, skipping cart session update.');
             }
         },
         loadWishlist() {
@@ -166,38 +178,33 @@ document.addEventListener('DOMContentLoaded', () => {
                     const activeImagePath = activeImageElement ? activeImageElement.getAttribute('data-path') : '';
 
                         // Use selected color or fallback to the first child's background color name
-                        if (!this.selectedColor) {
-                            // Query the specific container for the current product by matching product ID
-                            const container = document.querySelector(`#colors_circles_container-${product.id}`);
+                    if (!this.selectedColor) {
+                        // Query the specific container for the current product by matching product ID
+                        const container = document.querySelector(`#colors_circles_container-${product.id}`);
 
-                            if (container) {
-                                const firstChild = container.firstElementChild;
+                        if (container) {
+                            const firstChild = container.firstElementChild;
 
-                                // Check if the first child exists
-                                if (firstChild) {
-                                    // Directly access the color name from the inline style attribute
-                                    const firstChildBackgroundColor = firstChild.style.backgroundColor;
+                            // Check if the first child exists
+                            if (firstChild) {
+                                const firstChildBackgroundColor = firstChild.style.backgroundColor;
 
-                                    // Ensure the color name is retrieved and used; fallback to first computed color if needed
-                                    if (firstChildBackgroundColor) {
-                                        console.log(`First child color name:`, firstChildBackgroundColor);
-                                        this.selectedColor = firstChildBackgroundColor;
-                                    } else {
-                                        // Retrieve the computed style if the inline style is not set
-                                        const computedColor = window.getComputedStyle(firstChild).backgroundColor;
-                                        console.log(`Computed color:`, computedColor);
-                                        this.selectedColor = computedColor;
-                                    }
+                                if (firstChildBackgroundColor) {
+                                    console.log(`First child color name:`, firstChildBackgroundColor);
+                                    this.selectedColor = firstChildBackgroundColor;
                                 } else {
-                                    console.log(`Container has no child elements.`);
+                                    const computedColor = window.getComputedStyle(firstChild).backgroundColor;
+                                    console.log(`Computed color:`, computedColor);
+                                    this.selectedColor = computedColor;
                                 }
                             } else {
-                                console.log(`No container found for product ID: ${product.id}`);
+                                console.log(`Container has no child elements.`);
                             }
+                        } else {
+                            console.log(`No container found for product ID: ${product.id}`);
                         }
-
-
-                        product.selectedColor = this.selectedColor; // Use the selected or default color
+                    }
+                    product.selectedColor = this.selectedColor; // Use the selected or default color
 
 
                     product.image = activeImagePath;
